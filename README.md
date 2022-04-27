@@ -10,26 +10,35 @@ namespace CollectionConfig.net.Interfaces
 {
     public interface IConfigurationExample
     {
-        public IList<string> MyListOfThings { get; set; }
+        public IList<PersonConfiguration> MyListOfPeople { get; set; }
+    }
+}
+
+namespace CollectionConfig.net.Models
+{
+    public class PersonConfiguration
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
     }
 }
 
 and then this:
 
 var myConfig = 
-            new ConfigurationBuilder<IConfigurationExample>()
+            new CollectionConfigurationBuilder<IConfigurationExample>()
                 .UseCsvFile(@"C:\Users\Public\Documents\MyConfig.csv")
                 .Build();
 
 And then this:
 
     Console.WriteLine(
-        myConfig.MyListOfThings[0]);
+        myConfig.MyListOfPeople[0].Name);
 
     Which should read the current first value out of the file on disk and display it in the console
 
 And also this:
 
-    myConfig.MyListOfThings.Add("New value");
+    myConfig.MyListOfPeople.Add(new PersonConfiguration("Ted", 34));
 
     Which should immediately update the config file on disk to have another entry of "New value"
