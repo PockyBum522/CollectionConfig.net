@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <TargetFramework>net6.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>x64</Platforms>
+        <WarningLevel>9999</WarningLevel>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <RootNamespace>CollectionConfig.net.IntegrationTests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.5.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+        <PackageReference Include="NUnit" Version="3.13.2" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+    </ItemGroup>
+
+</Project>
