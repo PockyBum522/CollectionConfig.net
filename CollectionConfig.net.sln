@@ -8,14 +8,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "Integra
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Debug|x64 = Debug|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D7FB2EEB-AFEE-4286-B46A-615736CEB0A0}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{D7FB2EEB-AFEE-4286-B46A-615736CEB0A0}.Debug|Any CPU.Build.0 = Debug|x64
-		{D7FB2EEB-AFEE-4286-B46A-615736CEB0A0}.Release|Any CPU.ActiveCfg = Release|x64
-		{D7FB2EEB-AFEE-4286-B46A-615736CEB0A0}.Release|Any CPU.Build.0 = Release|x64
+		{D7FB2EEB-AFEE-4286-B46A-615736CEB0A0}.Release|x64.ActiveCfg = Release|x64
+		{D7FB2EEB-AFEE-4286-B46A-615736CEB0A0}.Release|x64.Build.0 = Release|x64
+		{D7FB2EEB-AFEE-4286-B46A-615736CEB0A0}.Debug|x64.ActiveCfg = Debug|x64
+		{D7FB2EEB-AFEE-4286-B46A-615736CEB0A0}.Debug|x64.Build.0 = Debug|x64
+		{5E251463-548B-4EF0-8D9A-38ACFEF3EF6D}.Release|x64.ActiveCfg = Release|x64
+		{5E251463-548B-4EF0-8D9A-38ACFEF3EF6D}.Release|x64.Build.0 = Release|x64
+		{5E251463-548B-4EF0-8D9A-38ACFEF3EF6D}.Debug|x64.ActiveCfg = Debug|x64
+		{5E251463-548B-4EF0-8D9A-38ACFEF3EF6D}.Debug|x64.Build.0 = Debug|x64
+		{E99B535E-5FD0-48CA-A316-054445772565}.Release|x64.ActiveCfg = Release|x64
+		{E99B535E-5FD0-48CA-A316-054445772565}.Release|x64.Build.0 = Release|x64
+		{E99B535E-5FD0-48CA-A316-054445772565}.Debug|x64.ActiveCfg = Debug|x64
+		{E99B535E-5FD0-48CA-A316-054445772565}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

@@ -19,12 +19,12 @@ public class DummyTests
     // {
     //     _sut = null;
     // }
-    //
-    // [Test]
-    // public void Sut_AfterTestSetup_ShouldNotBeNull()
-    // {
-    //     var result = _sut;
-    //
-    //     result.Should().NotBeNull();
-    // }
+    
+    [Test]
+    public void DUMMYTEST_Test_Test()
+    {
+        var result = true;
+    
+        result.Should().Be(true);
+    }
 }
