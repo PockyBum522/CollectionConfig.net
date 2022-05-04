@@ -56,3 +56,6 @@ Currently supports properties in the custom interface that are:
     string
     int
     double
+
+More types can be added to this list in InterfaceInterceptor.SetInvocationReturnToValueAsSpecificType(). 
+If you do so, please add tests for those types to the integration tests for CSV and JSON both.
