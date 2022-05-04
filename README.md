@@ -44,6 +44,8 @@ Then to use it, you simply:
     
     result.Should().Be("David");
 
+And since it's an interface, injection is easy should you choose to go that route.
+
 Currently supports properties in the custom interface that are:
 
     string
