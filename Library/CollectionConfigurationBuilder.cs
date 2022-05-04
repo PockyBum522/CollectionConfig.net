@@ -31,7 +31,7 @@ public class CollectionConfigurationBuilder<T> where T : class
         
         InstanceInternalData = new CollectionConfigurationInternalData();
         
-        var csvCacheLoader = new CsvCacheLoader(new CsvFileReader());
+        var csvCacheLoader = new CsvCacheLoader(new FileFileReader());
         _interceptor = new InterfaceInterceptor<T>(InstanceInternalData, csvCacheLoader);
     }
 

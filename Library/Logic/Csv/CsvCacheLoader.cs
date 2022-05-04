@@ -15,17 +15,17 @@ namespace CollectionConfig.net.Common.Logic.Csv;
 public class CsvCacheLoader
 {
     private readonly ProxyGenerator _generator = new ();
-    private readonly ICsvReader _csvReader;
+    private readonly IFileReader _fileReader;
     
     private int _positionInCsv;
         
     /// <summary>
     /// Constructor to take injected dependencies
     /// </summary>
-    /// <param name="csvReader">Injected</param>
-    public CsvCacheLoader(CsvFileReader csvReader)
+    /// <param name="fileReader">Injected</param>
+    public CsvCacheLoader(FileFileReader fileReader)
     {
-        _csvReader = csvReader;
+        _fileReader = fileReader;
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class CsvCacheLoader
     /// <returns>Data from the CSV on disk in the form of List of ProxiedListElement</returns>
     public List<FileElement> UpdateCachedDataFromCsv(CollectionConfigurationInternalData internalData)
     {
-        var rawCsvData = _csvReader.ReadCsv(internalData.FullFilePath);
+        var rawCsvData = _fileReader.Read(internalData.FullFilePath);
         
         var returnList = new List<FileElement>();
 
