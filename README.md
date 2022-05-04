@@ -43,3 +43,9 @@ Then to use it, you simply:
     var result = myList[0].Name; // Rows index does not account for the header row, just rows with values
     
     result.Should().Be("David");
+
+Currently supports properties in the custom interface that are:
+
+    string
+    int
+    double
