@@ -4,41 +4,38 @@ This is not associated with Config.net, I just liked how they set things up. My 
 
 # Goal
 
-The purpose of this project is that you should be able to do this:
+IT READS!!
 
-namespace CollectionConfig.net.Interfaces
-{
-    public interface IConfigurationExample
+Currently only supports CSV. To use, reference the library and then:
+
+Set up an interface such as:
+
+    /// <summary>
+    /// Example person model, used for testing
+    /// </summary>
+    public interface IExamplePerson
     {
-        public IList<PersonConfiguration> MyListOfPeople { get; set; }
+        string Name { get; set; }
+        int Age { get; set; }
+        double MilesRun { get; set; }
+        string PetsName { get; set; }
     }
-}
 
-namespace CollectionConfig.net.Models
-{
-    public class PersonConfiguration
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
-}
+Then set up a ExamplePersonList.csv file such as:
 
-and then this:
+    Name,Age,MilesRun,PetsName
+    David,32,3.15,Whiskey
+    Alyssa,26,2.12,Maxx
+    Robin,28,1.23,Snuggles
+    Dyamond,31,2.23,Trixie
 
-var myConfig = 
-            new CollectionConfigurationBuilder<IConfigurationExample>()
-                .UseCsvFile(@"C:\Users\Public\Documents\MyConfig.csv")
+Then to use it, you simply:
+
+    var myList = 
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
+                .UseCsvFile(ExamplePersonListCsvPath)
                 .Build();
 
-And then this:
-
-    Console.WriteLine(
-        myConfig.MyListOfPeople[0].Name);
-
-    Which should read the current first value out of the file on disk and display it in the console
-
-And also this:
-
-    myConfig.MyListOfPeople.Add(new PersonConfiguration("Ted", 34));
-
-    Which should immediately update the config file on disk to have another entry of "New value"
+        var result = myList[0].Name;
+        
+        result.Should().Be("David");
