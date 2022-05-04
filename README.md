@@ -33,6 +33,8 @@ Then set up a ExamplePersonList.csv file such as:
     Robin,28,1.23,Snuggles
     Dyamond,31,2.23,Trixie
 
+(Headers must match the interface property names exactly. It is case sensitive.)
+
 Then to use it, you simply:
 
     var myList = 
