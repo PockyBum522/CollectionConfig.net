@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Castle.DynamicProxy;
-using CollectionConfig.net.Common.Core;
-using CollectionConfig.net.Common.Logic.Csv.Interfaces;
+using CollectionConfig.net.Common.Logic.Interfaces;
 using CollectionConfig.net.Common.Models;
 
 namespace CollectionConfig.net.Common.Logic.Csv;
@@ -12,30 +10,30 @@ namespace CollectionConfig.net.Common.Logic.Csv;
 /// <summary>
 /// Handles taking a CSV and making a proxy list with all the values
 /// </summary>
-public class CsvCacheLoader
+public class CsvCacheLoader : ICacheLoader
 {
     private readonly ProxyGenerator _generator = new ();
-    private readonly IFileReader _fileReader;
+    private readonly IFileReader _csvFileReader;
     
     private int _positionInCsv;
         
     /// <summary>
     /// Constructor to take injected dependencies
     /// </summary>
-    /// <param name="fileReader">Injected</param>
-    public CsvCacheLoader(FileFileReader fileReader)
+    /// <param name="csvFileReader">Injected</param>
+    public CsvCacheLoader(CsvFileReader csvFileReader)
     {
-        _fileReader = fileReader;
+        _csvFileReader = csvFileReader;
     }
 
     /// <summary>
     /// Returns data from the CSV on disk in the form of List of ProxiedListElement, presumably to be cached 
     /// </summary>
-    /// <param name="internalData">Injected so that we have the FilePath</param>
+    /// <param name="instanceData">Injected so that we have the FilePath</param>
     /// <returns>Data from the CSV on disk in the form of List of ProxiedListElement</returns>
-    public List<FileElement> UpdateCachedDataFromCsv(CollectionConfigurationInternalData internalData)
+    public List<FileElement> UpdateCachedDataFromFile(CollectionConfigurationInstanceData instanceData)
     {
-        var rawCsvData = _fileReader.Read(internalData.FullFilePath);
+        var rawCsvData = _csvFileReader.Read(instanceData.FullFilePath);
         
         var returnList = new List<FileElement>();
 

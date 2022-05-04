@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using JetBrains.Annotations;
 
 namespace CollectionConfig.net.Common.Core;
 

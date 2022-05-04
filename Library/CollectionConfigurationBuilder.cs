@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Castle.DynamicProxy;
 using CollectionConfig.net.Common.Core;
 using CollectionConfig.net.Common.Logic.Csv;
-using CollectionConfig.net.Common.Models;
 
 namespace CollectionConfig.net.Common;
 
@@ -13,7 +11,7 @@ namespace CollectionConfig.net.Common;
 /// </summary>
 public class CollectionConfigurationBuilder<T> where T : class
 {
-    internal readonly CollectionConfigurationInternalData InstanceInternalData;
+    internal readonly CollectionConfigurationInstanceData InstanceInstanceData;
     
     private readonly ProxyGenerator _generator = new ();
     private readonly IInterceptor _interceptor;
@@ -29,10 +27,9 @@ public class CollectionConfigurationBuilder<T> where T : class
         if (!typeInfo.IsInterface) 
             throw new ArgumentException($"{typeInfo.FullName} must be an interface", typeInfo.FullName);
         
-        InstanceInternalData = new CollectionConfigurationInternalData();
+        InstanceInstanceData = new CollectionConfigurationInstanceData();
         
-        var csvCacheLoader = new CsvCacheLoader(new FileFileReader());
-        _interceptor = new InterfaceInterceptor<T>(InstanceInternalData, csvCacheLoader);
+        _interceptor = new InterfaceInterceptor<T>(InstanceInstanceData);
     }
 
     /// <summary>
@@ -41,8 +38,17 @@ public class CollectionConfigurationBuilder<T> where T : class
     /// <returns></returns>
     public T Build()
     {
-        T instance = _generator.CreateInterfaceProxyWithoutTarget<T>(_interceptor);
+        CheckThatFileFormatIsInitialized();
+        
+        var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(_interceptor);
         
         return instance;
+    }
+
+    private void CheckThatFileFormatIsInitialized()
+    {
+        if (InstanceInstanceData.CacheLoader is UninitializedCacheLoader)
+            throw new ArgumentException("Before using .Build() on a CollectionConfigurationBuilder, you MUST " +
+                                        "either call .UseCsvFile() or .UseJsonFile() on the builder");
     }
 }

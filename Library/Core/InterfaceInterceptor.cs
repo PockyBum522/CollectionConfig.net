@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using Castle.DynamicProxy;
 using CollectionConfig.net.Common.Logic.Csv;
-using CollectionConfig.net.Common.Models;
 
 namespace CollectionConfig.net.Common.Core
 {
    class InterfaceInterceptor<T> : IInterceptor where T : class
    {
-      private readonly CollectionConfigurationInternalData _collectionConfigurationInternalData;
-      private readonly CsvCacheLoader _csvCacheLoader;
-
+      private readonly CollectionConfigurationInstanceData _collectionConfigurationInstanceData;
+      
       private readonly ProxyGenerator _generator = new ();
       private int _indexBeingAccessedCurrently;
 
-      public InterfaceInterceptor(CollectionConfigurationInternalData collectionConfigurationInternalData, CsvCacheLoader csvCacheLoader)
+      public InterfaceInterceptor(CollectionConfigurationInstanceData collectionConfigurationInstanceData)
       {
-         _collectionConfigurationInternalData = collectionConfigurationInternalData;
-         _csvCacheLoader = csvCacheLoader;
+         _collectionConfigurationInstanceData = collectionConfigurationInstanceData;
       }
       
       public void Intercept(IInvocation invocation)
@@ -95,7 +88,7 @@ namespace CollectionConfig.net.Common.Core
       {
          UpdateCachedData();
          
-         foreach (var keyValuePair in _collectionConfigurationInternalData.CachedConfigurationItems[index].StoredValues)
+         foreach (var keyValuePair in _collectionConfigurationInstanceData.CachedConfigurationItems[index].StoredValues)
          {
             if (keyValuePair.Key == name)
                return keyValuePair.Value;
@@ -107,13 +100,15 @@ namespace CollectionConfig.net.Common.Core
 
       private void UpdateCachedData()
       {
-         _collectionConfigurationInternalData.CachedConfigurationItems.Clear();
+         _collectionConfigurationInstanceData.CachedConfigurationItems.Clear();
          
-         var cachedData = _csvCacheLoader.UpdateCachedDataFromCsv(_collectionConfigurationInternalData);
+         var cachedData = 
+            _collectionConfigurationInstanceData
+               .CacheLoader.UpdateCachedDataFromFile(_collectionConfigurationInstanceData);
 
          foreach (var fileElement in cachedData)
          {
-            _collectionConfigurationInternalData.CachedConfigurationItems.Add(fileElement);
+            _collectionConfigurationInstanceData.CachedConfigurationItems.Add(fileElement);
          }
       }
    }
