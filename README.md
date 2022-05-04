@@ -4,6 +4,10 @@ This is not associated with Config.net, I just liked how they set things up. My 
 
 # Goal
 
+The purpose of this project is that you should be able to read and write a native IList<ICustomInterface> object that maps to a JSON or CSV file on disk, easily.
+
+# Current Progress
+
 IT READS!!
 
 Currently only supports CSV. To use, reference the library and then:
