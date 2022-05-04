@@ -55,7 +55,7 @@ Currently supports properties in the custom interface that are:
 
     string
     int
-    double
+    double - (the usual floating point accuracy issues can occur here. If you test for equality, do so with a margin.)
 
 More types can be added to this list in InterfaceInterceptor.SetInvocationReturnToValueAsSpecificType(). 
-If you do so, please add tests for those types to the integration tests for CSV and JSON both.
+If you do so, please add tests for those types to the integration tests for CSV and JSON both. This means updading the example interface, and JSON and CSV example files to match.
