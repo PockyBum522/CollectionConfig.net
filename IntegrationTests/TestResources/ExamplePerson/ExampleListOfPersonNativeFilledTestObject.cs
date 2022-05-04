@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
+// ReSharper disable UnusedAutoPropertyAccessor.Global because these classes in this file are only for testing
 
 namespace CollectionConfig.net.IntegrationTests.TestResources.ExamplePerson;
 
@@ -25,7 +26,7 @@ public class PersonForTest
     /// <summary>
     /// Person's name. Only used in testing
     /// </summary>
-    public string Name { get; set; } = "";
+    public string Name { get; init; } = "";
     
     /// <summary>
     /// Person's age to test integers. Only used in testing
@@ -40,5 +41,5 @@ public class PersonForTest
     /// <summary>
     /// Person's pet's name. Only used in testing
     /// </summary>
-    public string PetsName { get; set; } = "";
+    public string PetsName { get; init; } = "";
 }
