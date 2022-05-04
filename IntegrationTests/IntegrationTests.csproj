@@ -23,7 +23,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="TestResources" />
+      <None Remove="TestResources\ExamplePerson\ExamplePersonList.csv" />
+      <Content Include="TestResources\ExamplePerson\ExamplePersonList.csv">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
