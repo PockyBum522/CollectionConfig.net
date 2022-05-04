@@ -8,9 +8,10 @@ The purpose of this project is that you should be able to read and write a nativ
 
 # Current Progress
 
-IT READS!!
+    JSON Files: Read-Only functional
+    CSV Files: Read-Only functional
 
-Currently only supports CSV. To use, reference the library and then:
+To use, reference the library and then:
 
 Set up an interface such as:
 
@@ -47,6 +48,8 @@ Then to use it, you simply:
     result.Should().Be("David");
 
 And since it's an interface, injection is easy should you choose to go that route.
+
+JSON file layout example in \IntegrationTests\TestResources\ExamplePerson\ExamplePersonList.json
 
 Currently supports properties in the custom interface that are:
 
