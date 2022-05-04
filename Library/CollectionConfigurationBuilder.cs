@@ -11,7 +11,7 @@ namespace CollectionConfig.net.Common;
 /// </summary>
 public class CollectionConfigurationBuilder<T> where T : class
 {
-    internal readonly CollectionConfigurationInstanceData InstanceInstanceData;
+    internal readonly CollectionConfigurationInstanceData BuilderInstanceData;
     
     private readonly ProxyGenerator _generator = new ();
     private readonly IInterceptor _interceptor;
@@ -27,9 +27,9 @@ public class CollectionConfigurationBuilder<T> where T : class
         if (!typeInfo.IsInterface) 
             throw new ArgumentException($"{typeInfo.FullName} must be an interface", typeInfo.FullName);
         
-        InstanceInstanceData = new CollectionConfigurationInstanceData();
+        BuilderInstanceData = new CollectionConfigurationInstanceData();
         
-        _interceptor = new InterfaceInterceptor<T>(InstanceInstanceData);
+        _interceptor = new InterfaceInterceptor(BuilderInstanceData);
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public class CollectionConfigurationBuilder<T> where T : class
 
     private void CheckThatFileFormatIsInitialized()
     {
-        if (InstanceInstanceData.CacheLoader is UninitializedCacheLoader)
+        if (BuilderInstanceData.CacheLoader is UninitializedCacheLoader)
             throw new ArgumentException("Before using .Build() on a CollectionConfigurationBuilder, you MUST " +
                                         "either call .UseCsvFile() or .UseJsonFile() on the builder");
     }

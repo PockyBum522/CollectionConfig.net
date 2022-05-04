@@ -27,9 +27,8 @@ public class CsvCacheLoader : ICacheLoader
     /// <summary>
     /// Returns data from the CSV on disk in the form of List of ProxiedListElement, presumably to be cached 
     /// </summary>
-    /// <param name="instanceData">Injected so that we have the FilePath</param>
     /// <returns>Data from the CSV on disk in the form of List of ProxiedListElement</returns>
-    public List<FileElement> UpdateCachedDataFromFile(CollectionConfigurationInstanceData instanceData)
+    public List<FileElement> UpdateCachedDataFromFile()
     {
         var rawCsvData = _csvFileReader.Read(instanceData.FullFilePath);
         

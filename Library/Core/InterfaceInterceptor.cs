@@ -3,7 +3,7 @@ using Castle.DynamicProxy;
 
 namespace CollectionConfig.net.Common.Core
 {
-   class InterfaceInterceptor<T> : IInterceptor where T : class
+   class InterfaceInterceptor : IInterceptor
    {
       private readonly CollectionConfigurationInstanceData _collectionConfigurationInstanceData;
       
@@ -100,8 +100,7 @@ namespace CollectionConfig.net.Common.Core
          _collectionConfigurationInstanceData.CachedConfigurationItems.Clear();
          
          var cachedData = 
-            _collectionConfigurationInstanceData
-               .CacheLoader.UpdateCachedDataFromFile(_collectionConfigurationInstanceData);
+            _collectionConfigurationInstanceData.CacheLoader.UpdateCachedDataFromFile();
 
          foreach (var fileElement in cachedData)
          {

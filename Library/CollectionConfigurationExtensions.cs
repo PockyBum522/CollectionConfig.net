@@ -18,9 +18,9 @@ public static class CollectionConfigurationExtensions
       this CollectionConfigurationBuilder<TInterface> builder,
       string csvFilePath) where TInterface : class
    {
-      builder.InstanceInstanceData.FullFilePath = csvFilePath;
+      builder.BuilderInstanceData.FullFilePath = csvFilePath;
       
-      builder.InstanceInstanceData.CacheLoader = new CsvCacheLoader(new CsvFileReader());
+      builder.BuilderInstanceData.CacheLoader = new CsvCacheLoader(new CsvFileReader());
       
       return builder;
    }
@@ -35,9 +35,9 @@ public static class CollectionConfigurationExtensions
       this CollectionConfigurationBuilder<TInterface> builder,
       string jsonFilePath) where TInterface : class
    {
-      builder.InstanceInstanceData.FullFilePath = jsonFilePath;
+      builder.BuilderInstanceData.FullFilePath = jsonFilePath;
 
-      builder.InstanceInstanceData.CacheLoader = new JsonCacheLoader(new JsonFileReader());
+      builder.BuilderInstanceData.CacheLoader = new JsonCacheLoader(new JsonFileReader());
       
       return builder;
    }
