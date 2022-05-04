@@ -40,6 +40,6 @@ Then to use it, you simply:
                 .UseCsvFile(ExamplePersonListCsvPath)
                 .Build();
 
-        var result = myList[0].Name;
-        
-        result.Should().Be("David");
+    var result = myList[0].Name; // Rows index does not account for the header row, just rows with values
+    
+    result.Should().Be("David");
