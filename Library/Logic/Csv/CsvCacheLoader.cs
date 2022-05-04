@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.DynamicProxy;
 using CollectionConfig.net.Common.Logic.Interfaces;
 using CollectionConfig.net.Common.Models;
 
@@ -12,7 +11,6 @@ namespace CollectionConfig.net.Common.Logic.Csv;
 /// </summary>
 public class CsvCacheLoader : ICacheLoader
 {
-    private readonly ProxyGenerator _generator = new ();
     private readonly IFileReader _csvFileReader;
     
     private int _positionInCsv;

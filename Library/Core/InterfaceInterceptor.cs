@@ -1,6 +1,5 @@
 ﻿using System;
 using Castle.DynamicProxy;
-using CollectionConfig.net.Common.Logic.Csv;
 
 namespace CollectionConfig.net.Common.Core
 {
@@ -26,24 +25,22 @@ namespace CollectionConfig.net.Common.Core
          
          if (invocation.Method.Name.StartsWith("get_"))
          {
-            SetInvocationReturnToValueAsSpecificType(invocation);
+            SetInvocationReturnValueAsSpecificType(invocation);
             return;
          }
          
          if (invocation.Method.Name.StartsWith("set_"))
          {
-            // For debugging, temp TODO: Remove this
-            var invocationTemp = invocation;
-            
-            // Update CSV with new name
-            
+            // For debugging, temp TODO: Remove this temp variable
+            var unused = invocation;
+
             return;
          }
 
          throw new Exception($"Intercepted method not supported: {invocation.Method.Name}");
       }
 
-      private void SetInvocationReturnToValueAsSpecificType(IInvocation invocation)
+      private void SetInvocationReturnValueAsSpecificType(IInvocation invocation)
       {
          var method = invocation.Method;
 

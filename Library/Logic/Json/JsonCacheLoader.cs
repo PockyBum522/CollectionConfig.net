@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using Castle.DynamicProxy;
 using CollectionConfig.net.Common.Logic.Interfaces;
 using CollectionConfig.net.Common.Models;
 using Newtonsoft.Json;
@@ -15,7 +13,6 @@ namespace CollectionConfig.net.Common.Logic.Json;
 /// </summary>
 public class JsonCacheLoader : ICacheLoader
 {
-    private readonly ProxyGenerator _generator = new ();
     private readonly IFileReader _fileReader;
     
     /// <summary>
@@ -65,10 +62,11 @@ public class JsonCacheLoader : ICacheLoader
             PositionInList = positionInList
         };
 
-        foreach (JProperty jElementToken in jsonToken.Children())
+        foreach (var jToken in jsonToken.Children())
         {
+            var jElementToken = (JProperty)jToken;
             var elementValue = (JValue)(jElementToken.First ?? throw new ArgumentNullException());
-            
+
             returnFileElement.StoredValues.Add(
                 new KeyValuePair<string, string>(
                     jElementToken.Name, elementValue.ToString(CultureInfo.InvariantCulture)
