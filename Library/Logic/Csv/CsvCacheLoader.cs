@@ -45,8 +45,6 @@ public class CsvCacheLoader
          
         foreach (var line in rawCsvData.Split(Environment.NewLine))
         {
-            
-            
             if (_positionInCsv == 0)
             {
                 headers = ReadHeaders(line);
