@@ -37,7 +37,7 @@ public static class CollectionConfigurationExtensions
    {
       builder.BuilderInstanceData.FullFilePath = jsonFilePath;
 
-      builder.BuilderInstanceData.CacheLoader = new JsonCacheLoader(new JsonFileReader());
+      builder.BuilderInstanceData.CacheLoader = new JsonCacheLoader(new FileReader());
       
       return builder;
    }

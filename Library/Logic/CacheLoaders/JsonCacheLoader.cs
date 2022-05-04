@@ -18,10 +18,10 @@ public class JsonCacheLoader : ICacheLoader
     /// <summary>
     /// Constructor to take injected dependencies
     /// </summary>
-    /// <param name="jsonFileReader">Injected</param>
-    public JsonCacheLoader(JsonFileReader jsonFileReader)
+    /// <param name="fileReader">Injected</param>
+    public JsonCacheLoader(FileReader fileReader)
     {
-        _fileReader = jsonFileReader;
+        _fileReader = fileReader;
     }
 
     /// <summary>

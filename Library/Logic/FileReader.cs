@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using CollectionConfig.net.Common.Logic.Interfaces;
 
-namespace CollectionConfig.net.Common.Logic.Csv;
+namespace CollectionConfig.net.Common.Logic.Json;
 
 /// <summary>
 /// Reads data in from CSV file
 /// </summary>
-public class CsvFileReader : IFileReader
+public class FileReader
 {
     /// <summary>
     /// Reads data in from csv file
