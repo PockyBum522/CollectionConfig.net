@@ -4,7 +4,7 @@ using CollectionConfig.net.Core.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CollectionConfig.net.Logic.Json;
+namespace CollectionConfig.net.Logic.CacheLoaders;
 
 /// <summary>
 /// Handles taking a CSV and making a proxy list with all the values
@@ -18,11 +18,11 @@ public class JsonCacheLoader : ICacheLoader
     /// Constructor to take injected dependencies
     /// </summary>
     /// <param name="fullFilePath">Full path of the JSON file containing configuration data</param>
-    /// <param name="jsonFileReader">Injected</param>
-    public JsonCacheLoader(string fullFilePath, JsonFileReader jsonFileReader)
+    /// <param name="fileReader">Injected</param>
+    public JsonCacheLoader(string fullFilePath, IFileReader fileReader)
     {
         _fullFilePath = fullFilePath;
-        _fileReader = jsonFileReader;
+        _fileReader = fileReader;
     }
     
     private FileElement MakeFileElementFrom(JToken jsonToken, int positionInList)

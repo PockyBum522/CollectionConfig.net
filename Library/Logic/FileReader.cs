@@ -1,11 +1,11 @@
 ﻿using CollectionConfig.net.Core.Interfaces;
 
-namespace CollectionConfig.net.Logic.Json;
+namespace CollectionConfig.net.Logic;
 
 /// <summary>
 /// Reads data in from CSV file
 /// </summary>
-public class JsonFileReader : IFileReader
+public class FileReader : IFileReader
 {
     /// <summary>
     /// Reads data in from csv file

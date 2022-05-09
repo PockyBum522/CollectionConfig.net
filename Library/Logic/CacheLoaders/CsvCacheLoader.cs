@@ -1,7 +1,7 @@
 ﻿using CollectionConfig.net.Core.Interfaces;
 using CollectionConfig.net.Core.Models;
 
-namespace CollectionConfig.net.Logic.Csv;
+namespace CollectionConfig.net.Logic.CacheLoaders;
 
 /// <summary>
 /// Handles taking a CSV and making a proxy list with all the values
@@ -9,7 +9,7 @@ namespace CollectionConfig.net.Logic.Csv;
 public class CsvCacheLoader : ICacheLoader
 {
     private readonly string _fullFilePath;
-    private readonly IFileReader _csvFileReader;
+    private readonly IFileReader _fileReader;
     
     private int _positionInCsv;
 
@@ -17,11 +17,11 @@ public class CsvCacheLoader : ICacheLoader
     /// Constructor to take injected dependencies
     /// </summary>
     /// <param name="fullFilePath">Full path to CSV file containing configuration data</param>
-    /// <param name="csvFileReader">Injected</param>
-    public CsvCacheLoader(string fullFilePath, CsvFileReader csvFileReader)
+    /// <param name="fileReader">Injected</param>
+    public CsvCacheLoader(string fullFilePath, IFileReader fileReader)
     {
         _fullFilePath = fullFilePath;
-        _csvFileReader = csvFileReader;
+        _fileReader = fileReader;
     }
     
     private List<string> ReadHeaders(string line)
@@ -56,7 +56,7 @@ public class CsvCacheLoader : ICacheLoader
     /// <returns>Data from the CSV on disk in the form of List of ProxiedListElement</returns>
     public List<FileElement> UpdateCachedDataFromFile()
     {
-        var rawCsvData = _csvFileReader.Read(_fullFilePath);
+        var rawCsvData = _fileReader.Read(_fullFilePath);
         
         var returnList = new List<FileElement>();
 

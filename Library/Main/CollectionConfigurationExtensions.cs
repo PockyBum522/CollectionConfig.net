@@ -1,5 +1,5 @@
-﻿using CollectionConfig.net.Logic.Csv;
-using CollectionConfig.net.Logic.Json;
+﻿using CollectionConfig.net.Logic;
+using CollectionConfig.net.Logic.CacheLoaders;
 
 namespace CollectionConfig.net.Main;
 
@@ -20,7 +20,7 @@ public static class CollectionConfigurationExtensions
    {
       // Add CSV specific dependencies
       builder.InstanceData.FullFilePath = csvFilePath;
-      builder.InstanceData.CacheLoader = new CsvCacheLoader(csvFilePath, new CsvFileReader());
+      builder.InstanceData.CacheLoader = new CsvCacheLoader(csvFilePath, new FileReader());
       
       return builder;
    }
@@ -37,7 +37,7 @@ public static class CollectionConfigurationExtensions
    {
       // Add JSON specific dependencies
       builder.InstanceData.FullFilePath = jsonFilePath;
-      builder.InstanceData.CacheLoader = new JsonCacheLoader(jsonFilePath, new JsonFileReader());
+      builder.InstanceData.CacheLoader = new JsonCacheLoader(jsonFilePath, new FileReader());
       
       return builder;
    }
