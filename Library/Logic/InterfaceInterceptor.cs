@@ -1,20 +1,34 @@
-﻿using System;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
+using CollectionConfig.net.Core.Models;
 
-namespace CollectionConfig.net.Common.Core
+namespace CollectionConfig.net.Logic
 {
-   class InterfaceInterceptor<T> : IInterceptor where T : class
+   /// <summary>
+   /// Sets up the interception logic for the proxy object. Anything that's going to run on method calls
+   /// using "methods" in the proxy object will get handled here.
+   /// </summary>
+   /// <typeparam name="T">The interface to set up a proxy object from</typeparam>
+   public class InterfaceInterceptor<T> : IInterceptor where T : class
    {
-      private readonly CollectionConfigurationInstanceData _collectionConfigurationInstanceData;
-      
+      private readonly InstanceData _instanceData;
       private readonly ProxyGenerator _generator = new ();
       private int _indexBeingAccessedCurrently;
 
-      public InterfaceInterceptor(CollectionConfigurationInstanceData collectionConfigurationInstanceData)
+      /// <summary>
+      /// Constructor to set up injected dependencies
+      /// </summary>
+      /// <param name="instanceData">Injected</param>
+      public InterfaceInterceptor(InstanceData instanceData)
       {
-         _collectionConfigurationInstanceData = collectionConfigurationInstanceData;
+         _instanceData = instanceData;
       }
-      
+
+      /// <summary>
+      /// Actual logic that handles methods on the proxied object that was created from the settings interface passed
+      /// as a type parameter
+      /// </summary>
+      /// <param name="invocation"></param>
+      /// <exception cref="Exception"></exception>
       public void Intercept(IInvocation invocation)
       {
          if (invocation.Method.Name == "get_Item")
@@ -85,7 +99,7 @@ namespace CollectionConfig.net.Common.Core
       {
          UpdateCachedData();
          
-         foreach (var keyValuePair in _collectionConfigurationInstanceData.CachedConfigurationItems[index].StoredValues)
+         foreach (var keyValuePair in _instanceData.CachedConfigurationItems[index].StoredValues)
          {
             if (keyValuePair.Key == name)
                return keyValuePair.Value;
@@ -97,15 +111,14 @@ namespace CollectionConfig.net.Common.Core
 
       private void UpdateCachedData()
       {
-         _collectionConfigurationInstanceData.CachedConfigurationItems.Clear();
+         _instanceData.CachedConfigurationItems.Clear();
          
          var cachedData = 
-            _collectionConfigurationInstanceData
-               .CacheLoader.UpdateCachedDataFromFile(_collectionConfigurationInstanceData);
+            _instanceData.CacheLoader.UpdateCachedDataFromFile();
 
          foreach (var fileElement in cachedData)
          {
-            _collectionConfigurationInstanceData.CachedConfigurationItems.Add(fileElement);
+            _instanceData.CachedConfigurationItems.Add(fileElement);
          }
       }
    }

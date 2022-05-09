@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <OutputType>library</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>x64</Platforms>
+        <WarningLevel>9999</WarningLevel>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <RootNamespace>CollectionConfig.net.Core</RootNamespace>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Castle.Core" Version="4.4.1" />
+      <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+    </ItemGroup>
+
+</Project>

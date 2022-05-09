@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
-namespace CollectionConfig.net.Common.Models;
+namespace CollectionConfig.net.Core.Models;
 
 /// <summary>
 /// Stores the data for a list element that will be proxied from an Interface along with its

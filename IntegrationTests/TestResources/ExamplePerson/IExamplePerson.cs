@@ -1,4 +1,4 @@
-﻿namespace CollectionConfig.net.IntegrationTests.TestResources.ExamplePerson;
+﻿namespace IntegrationTests.TestResources.ExamplePerson;
 
 /// <summary>
 /// Example person model, used for testing

@@ -1,7 +1,7 @@
-﻿using CollectionConfig.net.Common.Logic.Csv;
-using CollectionConfig.net.Common.Logic.Json;
+﻿using CollectionConfig.net.Logic.Csv;
+using CollectionConfig.net.Logic.Json;
 
-namespace CollectionConfig.net.Common;
+namespace CollectionConfig.net.Main;
 
 /// <summary>
 /// Configuration extensions
@@ -18,9 +18,9 @@ public static class CollectionConfigurationExtensions
       this CollectionConfigurationBuilder<TInterface> builder,
       string csvFilePath) where TInterface : class
    {
-      builder.InstanceInstanceData.FullFilePath = csvFilePath;
-      
-      builder.InstanceInstanceData.CacheLoader = new CsvCacheLoader(new CsvFileReader());
+      // Add CSV specific dependencies
+      builder.InstanceData.FullFilePath = csvFilePath;
+      builder.InstanceData.CacheLoader = new CsvCacheLoader(csvFilePath, new CsvFileReader());
       
       return builder;
    }
@@ -35,9 +35,9 @@ public static class CollectionConfigurationExtensions
       this CollectionConfigurationBuilder<TInterface> builder,
       string jsonFilePath) where TInterface : class
    {
-      builder.InstanceInstanceData.FullFilePath = jsonFilePath;
-
-      builder.InstanceInstanceData.CacheLoader = new JsonCacheLoader(new JsonFileReader());
+      // Add JSON specific dependencies
+      builder.InstanceData.FullFilePath = jsonFilePath;
+      builder.InstanceData.CacheLoader = new JsonCacheLoader(jsonFilePath, new JsonFileReader());
       
       return builder;
    }

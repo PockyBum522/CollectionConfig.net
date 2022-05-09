@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace CollectionConfig.net.Common.Core;
+namespace CollectionConfig.net.Logic;
 
 /// <summary>
 /// Converts values from string to specific type

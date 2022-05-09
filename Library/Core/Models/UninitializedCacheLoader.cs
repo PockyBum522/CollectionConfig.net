@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using CollectionConfig.net.Common.Logic.Interfaces;
-using CollectionConfig.net.Common.Models;
+﻿using CollectionConfig.net.Core.Interfaces;
 
-namespace CollectionConfig.net.Common.Logic.Csv;
+namespace CollectionConfig.net.Core.Models;
 
 /// <summary>
 /// Handles taking a CSV and making a proxy list with all the values

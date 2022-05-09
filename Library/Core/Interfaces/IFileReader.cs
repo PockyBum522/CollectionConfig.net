@@ -1,4 +1,4 @@
-namespace CollectionConfig.net.Common.Logic.Interfaces;
+namespace CollectionConfig.net.Core.Interfaces;
 
 /// <summary>
 /// Reads data from a specified CSV file

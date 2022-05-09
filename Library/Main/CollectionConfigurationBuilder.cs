@@ -1,20 +1,20 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Castle.DynamicProxy;
-using CollectionConfig.net.Common.Core;
-using CollectionConfig.net.Common.Logic.Csv;
+using CollectionConfig.net.Core.Models;
+using CollectionConfig.net.Logic;
+using JetBrains.Annotations;
 
-namespace CollectionConfig.net.Common;
+namespace CollectionConfig.net.Main;
 
 /// <summary>
 /// Allows for building the CollectionConfiguration later
 /// </summary>
+[PublicAPI]
 public class CollectionConfigurationBuilder<T> where T : class
 {
-    internal readonly CollectionConfigurationInstanceData InstanceInstanceData;
+    internal InstanceData InstanceData;
     
     private readonly ProxyGenerator _generator = new ();
-    private readonly IInterceptor _interceptor;
 
     /// <summary>
     /// Constructor to allow for building the CollectionConfiguration later
@@ -26,28 +26,31 @@ public class CollectionConfigurationBuilder<T> where T : class
 
         if (!typeInfo.IsInterface) 
             throw new ArgumentException($"{typeInfo.FullName} must be an interface", typeInfo.FullName);
-        
-        InstanceInstanceData = new CollectionConfigurationInstanceData();
-        
-        _interceptor = new InterfaceInterceptor<T>(InstanceInstanceData);
+
+        InstanceData = new InstanceData(
+            "", 
+            new List<FileElement>(),
+            new UninitializedCacheLoader());
     }
 
     /// <summary>
-    /// Creates an instance of the configuration interface
+    /// Creates an instance of the configuration interface as a proxy object for the interface
     /// </summary>
     /// <returns></returns>
     public T Build()
     {
+        var interceptor = new InterfaceInterceptor<T>(InstanceData);
+        
         CheckThatFileFormatIsInitialized();
         
-        var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(_interceptor);
+        var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(interceptor);
         
         return instance;
     }
 
     private void CheckThatFileFormatIsInitialized()
     {
-        if (InstanceInstanceData.CacheLoader is UninitializedCacheLoader)
+        if (InstanceData.CacheLoader is UninitializedCacheLoader)
             throw new ArgumentException("Before using .Build() on a CollectionConfigurationBuilder, you MUST " +
                                         "either call .UseCsvFile() or .UseJsonFile() on the builder");
     }

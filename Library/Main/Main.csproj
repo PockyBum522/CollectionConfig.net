@@ -1,21 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>library</OutputType>
         <TargetFramework>net6.0</TargetFramework>
+        <OutputType>library</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Configurations>Debug;Release</Configurations>
         <Platforms>x64</Platforms>
         <WarningLevel>9999</WarningLevel>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <RootNamespace>CollectionConfig.net.Common</RootNamespace>
+        <RootNamespace>CollectionConfig.net.Main</RootNamespace>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\Logic\Logic.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Castle.Core" Version="4.4.1" />
-      <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
 </Project>

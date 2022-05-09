@@ -1,63 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CollectionConfig.net.Common.Logic.Interfaces;
-using CollectionConfig.net.Common.Models;
+﻿using CollectionConfig.net.Core.Interfaces;
+using CollectionConfig.net.Core.Models;
 
-namespace CollectionConfig.net.Common.Logic.Csv;
+namespace CollectionConfig.net.Logic.Csv;
 
 /// <summary>
 /// Handles taking a CSV and making a proxy list with all the values
 /// </summary>
 public class CsvCacheLoader : ICacheLoader
 {
+    private readonly string _fullFilePath;
     private readonly IFileReader _csvFileReader;
     
     private int _positionInCsv;
-        
+
     /// <summary>
     /// Constructor to take injected dependencies
     /// </summary>
+    /// <param name="fullFilePath">Full path to CSV file containing configuration data</param>
     /// <param name="csvFileReader">Injected</param>
-    public CsvCacheLoader(CsvFileReader csvFileReader)
+    public CsvCacheLoader(string fullFilePath, CsvFileReader csvFileReader)
     {
+        _fullFilePath = fullFilePath;
         _csvFileReader = csvFileReader;
     }
-
-    /// <summary>
-    /// Returns data from the CSV on disk in the form of List of ProxiedListElement, presumably to be cached 
-    /// </summary>
-    /// <param name="instanceData">Injected so that we have the FilePath</param>
-    /// <returns>Data from the CSV on disk in the form of List of ProxiedListElement</returns>
-    public List<FileElement> UpdateCachedDataFromFile(CollectionConfigurationInstanceData instanceData)
-    {
-        var rawCsvData = _csvFileReader.Read(instanceData.FullFilePath);
-        
-        var returnList = new List<FileElement>();
-
-        var headers = new List<string>();
-        
-        _positionInCsv = 0;
-         
-        foreach (var line in rawCsvData.Split(Environment.NewLine))
-        {
-            if (_positionInCsv == 0)
-            {
-                headers = ReadHeaders(line);
-                _positionInCsv++;
-                continue;
-            }
-            
-            var instance = GetCachedElementLoadedWithCsvData(line, headers);
-
-            returnList.Add(instance);
-        
-            _positionInCsv++;
-        }
-
-        return returnList;
-    }
-
+    
     private List<string> ReadHeaders(string line)
     {
         var splitHeaders = line.Split(",");
@@ -82,5 +48,38 @@ public class CsvCacheLoader : ICacheLoader
         }
         
         return proxiedListElement;
+    }
+
+    /// <summary>
+    /// Returns data from the CSV on disk in the form of List of ProxiedListElement, presumably to be cached 
+    /// </summary>
+    /// <returns>Data from the CSV on disk in the form of List of ProxiedListElement</returns>
+    public List<FileElement> UpdateCachedDataFromFile()
+    {
+        var rawCsvData = _csvFileReader.Read(_fullFilePath);
+        
+        var returnList = new List<FileElement>();
+
+        var headers = new List<string>();
+        
+        _positionInCsv = 0;
+         
+        foreach (var line in rawCsvData.Split(Environment.NewLine))
+        {
+            if (_positionInCsv == 0)
+            {
+                headers = ReadHeaders(line);
+                _positionInCsv++;
+                continue;
+            }
+            
+            var instance = GetCachedElementLoadedWithCsvData(line, headers);
+
+            returnList.Add(instance);
+        
+            _positionInCsv++;
+        }
+
+        return returnList;
     }
 }

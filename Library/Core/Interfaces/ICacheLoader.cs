@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using CollectionConfig.net.Common.Models;
+﻿using CollectionConfig.net.Core.Models;
 
-namespace CollectionConfig.net.Common.Logic.Interfaces;
+namespace CollectionConfig.net.Core.Interfaces;
 
 /// <summary>
 /// Used for loading data from a CSV or JSON file that represents a List of ICustomInterface into a cached state

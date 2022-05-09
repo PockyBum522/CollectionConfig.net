@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using CollectionConfig.net.Common;
-using CollectionConfig.net.IntegrationTests.TestResources.ExamplePerson;
+using CollectionConfig.net.Main;
 using FluentAssertions;
+using IntegrationTests.TestResources.ExamplePerson;
 using NUnit.Framework;
 
-namespace CollectionConfig.net.IntegrationTests;
+namespace IntegrationTests;
 
 public class CsvReadTypeTests
 {

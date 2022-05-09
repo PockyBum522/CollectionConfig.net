@@ -1,60 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using CollectionConfig.net.Common.Logic.Interfaces;
-using CollectionConfig.net.Common.Models;
+﻿using System.Globalization;
+using CollectionConfig.net.Core.Interfaces;
+using CollectionConfig.net.Core.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CollectionConfig.net.Common.Logic.Json;
+namespace CollectionConfig.net.Logic.Json;
 
 /// <summary>
 /// Handles taking a CSV and making a proxy list with all the values
 /// </summary>
 public class JsonCacheLoader : ICacheLoader
 {
+    private readonly string _fullFilePath;
     private readonly IFileReader _fileReader;
-    
+
     /// <summary>
     /// Constructor to take injected dependencies
     /// </summary>
+    /// <param name="fullFilePath">Full path of the JSON file containing configuration data</param>
     /// <param name="jsonFileReader">Injected</param>
-    public JsonCacheLoader(JsonFileReader jsonFileReader)
+    public JsonCacheLoader(string fullFilePath, JsonFileReader jsonFileReader)
     {
+        _fullFilePath = fullFilePath;
         _fileReader = jsonFileReader;
     }
-
-    /// <summary>
-    /// Returns data from the JSON on disk in the form of List of ProxiedListElement, presumably to be cached 
-    /// </summary>
-    /// <param name="instanceData">Injected so that we have the FilePath</param>
-    /// <returns>Data from the JSON on disk in the form of List of ProxiedListElement</returns>
-    public List<FileElement> UpdateCachedDataFromFile(CollectionConfigurationInstanceData instanceData)
-    {
-        var rawJsonData = _fileReader.Read(instanceData.FullFilePath);
-        
-        var returnList = new List<FileElement>();
-        
-        var dynamicJsonObject = JsonConvert.DeserializeObject(rawJsonData);
-
-        var jArrayObject = (JArray)(dynamicJsonObject ?? throw new ArgumentNullException(
-                                        nameof(dynamicJsonObject), 
-                                        "Could not deserialize JSON data into JArray"));
-
-        var positionInList = 0;
-        
-        foreach (var jsonToken in jArrayObject.Children())
-        {
-            var fileElement = MakeFileElementFrom(jsonToken, positionInList);
-            
-            returnList.Add(fileElement);
-
-            positionInList++;
-        }
-        
-        return returnList;
-    }
-
+    
     private FileElement MakeFileElementFrom(JToken jsonToken, int positionInList)
     {
         var returnFileElement = new FileElement()
@@ -74,5 +44,35 @@ public class JsonCacheLoader : ICacheLoader
         }
         
         return returnFileElement;
+    }
+
+    /// <summary>
+    /// Returns data from the JSON on disk in the form of List of ProxiedListElement, presumably to be cached 
+    /// </summary>
+    /// <returns>Data from the JSON on disk in the form of List of ProxiedListElement</returns>
+    public List<FileElement> UpdateCachedDataFromFile()
+    {
+        var rawJsonData = _fileReader.Read(_fullFilePath);
+        
+        var returnList = new List<FileElement>();
+        
+        var dynamicJsonObject = JsonConvert.DeserializeObject(rawJsonData);
+
+        var jArrayObject = (JArray)(dynamicJsonObject ?? throw new ArgumentNullException(
+            nameof(dynamicJsonObject), 
+            "Could not deserialize JSON data into JArray"));
+
+        var positionInList = 0;
+        
+        foreach (var jsonToken in jArrayObject.Children())
+        {
+            var fileElement = MakeFileElementFrom(jsonToken, positionInList);
+            
+            returnList.Add(fileElement);
+
+            positionInList++;
+        }
+        
+        return returnList;
     }
 }

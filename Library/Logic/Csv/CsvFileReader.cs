@@ -1,7 +1,6 @@
-﻿using System.IO;
-using CollectionConfig.net.Common.Logic.Interfaces;
+﻿using CollectionConfig.net.Core.Interfaces;
 
-namespace CollectionConfig.net.Common.Logic.Csv;
+namespace CollectionConfig.net.Logic.Csv;
 
 /// <summary>
 /// Reads data in from CSV file
