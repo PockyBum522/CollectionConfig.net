@@ -1,23 +1,19 @@
 ﻿using Castle.DynamicProxy;
+using JetBrains.Annotations;
 
-namespace CollectionConfig.net.Logic;
+namespace CollectionConfig.net.Main;
 
 /// <summary>
 /// Sets up extension for GetBlankItem() on IList
 /// </summary>
-public class ListHelpers
+[PublicAPI]
+public static class ListExtensions
 {
-    private readonly IInterceptor _interceptor;
-    private readonly ProxyGenerator Generator = new ();
-
     /// <summary>
-    /// Constructor to set up injected dependencies
+    /// Property for injection of IInterceptor
     /// </summary>
-    /// <param name="interceptor">Injected</param>
-    public ListHelpers(IInterceptor interceptor)
-    {
-        _interceptor = interceptor;
-    }
+    public static IInterceptor? Interceptor;
+    private static ProxyGenerator _generator = new ();
     
     /// <summary>
     /// Extension method for IList to allow generation of a new blank Interface Proxy (An element of that IList)
@@ -26,9 +22,12 @@ public class ListHelpers
     /// <param name="inputList">The IList to extend</param>
     /// <typeparam name="T">The type of Elements in the IList, must be an interface</typeparam>
     /// <returns>New blank element of same type as elements in IList</returns>
-    public T GenerateNewElement<T>(IList<T> inputList)
+    public static T GenerateNewElement<T>(this IList<T> inputList)
     {
-        var itemProxy = Generator.CreateInterfaceProxyWithoutTarget(typeof(T), _interceptor);
+        if (Interceptor is null) throw new Exception($"{nameof(Interceptor)} was null in GenerateNewElement" +
+                                                     $"this means {nameof(Interceptor)} was not properly injected");
+
+        var itemProxy = _generator.CreateInterfaceProxyWithoutTarget(typeof(T), Interceptor);
 
         var convertedItemProxy = (T)itemProxy;
         

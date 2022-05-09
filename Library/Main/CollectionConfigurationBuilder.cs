@@ -8,10 +8,18 @@ namespace CollectionConfig.net.Main;
 
 /// <summary>
 /// Allows for building the CollectionConfiguration later
+///
+/// All dependency injection takes place either here or in CollectionConfigurationExtensions
 /// </summary>
 [PublicAPI]
 public class CollectionConfigurationBuilder<T> where T : class
 {
+    /// <summary>
+    /// This will be created in the constructor for CollectionConfigurationBuilder, then will be accessed by
+    /// CollectionConfigurationExtensions to set the full file path of the config file.
+    ///
+    /// InstanceData is then injected into most of the classes in this library. 
+    /// </summary>
     internal InstanceData InstanceData;
     
     private readonly ProxyGenerator _generator = new ();
@@ -27,6 +35,8 @@ public class CollectionConfigurationBuilder<T> where T : class
         if (!typeInfo.IsInterface) 
             throw new ArgumentException($"{typeInfo.FullName} must be an interface", typeInfo.FullName);
 
+        // Set up InstanceData, which will be accessed by CollectionConfigurationExtensions to set the full file path
+        // of the config file. InstanceData is then injected into most of the classes in this library. 
         InstanceData = new InstanceData(
             "", 
             new List<FileElement>(),
@@ -42,6 +52,9 @@ public class CollectionConfigurationBuilder<T> where T : class
         var interceptor = new InterfaceInterceptor<T>(InstanceData);
         
         CheckThatFileFormatIsInitialized();
+        
+        // Inject interceptor into ListExtensions
+        ListExtensions.Interceptor = interceptor;
         
         var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(interceptor);
         
