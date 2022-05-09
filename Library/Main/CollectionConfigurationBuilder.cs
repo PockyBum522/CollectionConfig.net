@@ -2,6 +2,7 @@
 using Castle.DynamicProxy;
 using CollectionConfig.net.Core.Models;
 using CollectionConfig.net.Logic;
+using CollectionConfig.net.Logic.InterfaceInterceptors;
 using JetBrains.Annotations;
 
 namespace CollectionConfig.net.Main;
@@ -49,12 +50,13 @@ public class CollectionConfigurationBuilder<T> where T : class
     /// <returns></returns>
     public T Build()
     {
-        var interceptor = new InterfaceInterceptor<T>(InstanceData);
-        
         CheckThatFileFormatIsInitialized();
         
+        // Below here is all setting up and injecting dependencies
+        var interceptor = new InterfaceInterceptor<T>(InstanceData);
+        
         // Inject interceptor into ListExtensions
-        ListExtensions.Interceptor = interceptor;
+        ListExtensions.Interceptor = new InterfaceBlankInterceptor<T>();
         
         var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(interceptor);
         

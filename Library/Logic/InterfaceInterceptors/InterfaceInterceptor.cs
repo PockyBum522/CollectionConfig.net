@@ -1,7 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using CollectionConfig.net.Core.Models;
 
-namespace CollectionConfig.net.Logic
+namespace CollectionConfig.net.Logic.InterfaceInterceptors
 {
    /// <summary>
    /// Sets up the interception logic for the proxy object. Anything that's going to run on method calls

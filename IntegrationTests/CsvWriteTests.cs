@@ -47,7 +47,9 @@ public class CsvWriteTests
 
         var personToAdd = myList.GenerateNewElement();
     
-        personToAdd.Name.Should().BeEmpty();
+        var storedName = personToAdd.Name;
+
+        storedName.Should().BeEmpty();
         personToAdd.Age.Should().Be(0);
         personToAdd.MilesRun.Should().Be(0.0);
         personToAdd.PetsName.Should().BeEmpty();

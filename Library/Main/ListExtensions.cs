@@ -24,8 +24,12 @@ public static class ListExtensions
     /// <returns>New blank element of same type as elements in IList</returns>
     public static T GenerateNewElement<T>(this IList<T> inputList)
     {
-        if (Interceptor is null) throw new Exception($"{nameof(Interceptor)} was null in GenerateNewElement" +
-                                                     $"this means {nameof(Interceptor)} was not properly injected");
+        const string interceptorNullMessage = 
+            $"{nameof(Interceptor)} was null in GenerateNewElement, this means {nameof(Interceptor)} was not " +
+            $"properly injected. You likely need to create a CollectionConfigurationBuilder and build it before this " +
+            $"extension method can be used.";
+        
+        if (Interceptor is null) throw new Exception(interceptorNullMessage);
 
         var itemProxy = _generator.CreateInterfaceProxyWithoutTarget(typeof(T), Interceptor);
 
