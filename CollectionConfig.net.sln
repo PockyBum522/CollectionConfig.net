@@ -1,5 +1,5 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CollectionConfig.net", "CollectionConfig.net", "{B5114253-F08F-4332-A1C4-A3D461A56954}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{B5114253-F08F-4332-A1C4-A3D461A56954}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E99B535E-5FD0-48CA-A316-054445772565}"
 EndProject
