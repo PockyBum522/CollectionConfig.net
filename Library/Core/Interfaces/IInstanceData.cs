@@ -1,4 +1,5 @@
 ﻿using CollectionConfig.net.Core.Models;
+using Serilog;
 
 namespace CollectionConfig.net.Core.Interfaces;
 
@@ -7,6 +8,11 @@ namespace CollectionConfig.net.Core.Interfaces;
 /// </summary>
 public interface IInstanceData
 {
+    /// <summary>
+    /// Injected logger, optional
+    /// </summary>
+    ILogger? Logger { get; set; }
+    
     /// <summary>
     /// Full file path of the CollectionConfiguration CSV or JSON file on disk
     /// </summary>

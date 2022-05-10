@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Castle.DynamicProxy;
+using CollectionConfig.net.Core.Interfaces;
 using CollectionConfig.net.Core.Models;
 using Serilog;
 
@@ -9,11 +10,11 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
    /// Sets up the interception logic for the proxy object. Anything that's going to run on method calls
    /// using "methods" in the proxy object will get handled here.
    /// </summary>
-   /// <typeparam name="T">The interface to set up a proxy object from</typeparam>
-   public class InterfaceInterceptor<T> : IInterceptor where T : class
+   /// <typeparam name="TIListOfCustomInterface">The interface to set up a proxy object from</typeparam>
+   public class InterfaceInterceptor<TIListOfCustomInterface, TNestedCustomInterface> : IInterceptor where TIListOfCustomInterface : class
    {
-      private readonly ILogger? _logger;
-      private readonly InstanceData _instanceData;
+      private readonly ILogger? _logger = null;
+      private readonly IInstanceData _instanceData;
       private readonly ProxyGenerator _generator = new ();
       private int _indexBeingAccessedCurrently;
 
@@ -21,35 +22,47 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
       /// Constructor to set up injected dependencies
       /// </summary>
       /// <param name="instanceData">Injected</param>
-      /// <param name="logger">Injected, optional</param>
-      public InterfaceInterceptor(InstanceData instanceData, ILogger? logger = null)
+      public InterfaceInterceptor(IInstanceData instanceData)
       {
-         _logger = logger;
          _instanceData = instanceData;
+         _logger = instanceData.Logger;
       }
 
       /// <summary>
       /// Actual logic that handles methods on the proxied object that was created from the settings interface passed
       /// as a type parameter
       /// </summary>
-      /// <param name="invocation"></param>
-      /// <exception cref="Exception"></exception>
+      /// <param name="invocation">invocation with intercepted method info</param>
+      /// <exception cref="Exception">Thrown if method is called which is isn't handled</exception>
       public void Intercept(IInvocation invocation)
       {
+         _logger?.Information("New method intercepted in {ThisClass}, method name is {MethodName}",
+            nameof(InterfaceInterceptor<TIListOfCustomInterface>), invocation.Method.Name);
+         
          if (invocation.Method.Name == "get_Item")
          {
+            UpdateCachedData();
             SetUpElementProxy(invocation);
             return;
          }
          
          if (invocation.Method.Name == "GetEnumerator")
          {
+            UpdateCachedData();
             SetInvocationReturnValueAsEnumeratorProxy(invocation);
+            return;
+         }
+         
+         if (invocation.Method.Name.StartsWith("get_Count"))
+         {
+            UpdateCachedData();
+            SetProxyReturnValueAsListCurrentCount(invocation);
             return;
          }
          
          if (invocation.Method.Name.StartsWith("get_"))
          {
+            UpdateCachedData();
             SetInvocationReturnValueAsSpecificType(invocation);
             return;
          }
@@ -57,6 +70,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
          // Handles when a proxy element is being added to the proxy object (List of ICustomInterface)
          if (invocation.Method.Name.StartsWith("Add"))
          {
+            UpdateCachedData();
             AddElementToFile(invocation);
             UpdateCachedData();
 
@@ -66,10 +80,16 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
          throw new Exception($"Intercepted method not supported: {invocation.Method.Name}");
       }
 
+      private void SetProxyReturnValueAsListCurrentCount(IInvocation invocation)
+      {
+         invocation.ReturnValue = _instanceData.CachedConfigurationItems.Count;
+      }
+
       private void SetInvocationReturnValueAsEnumeratorProxy(IInvocation invocation)
       {
          // Enumerable from cached items
-         
+         invocation.ReturnValue = 
+            new ProxyListEnumerator<TNestedCustomInterface>(_instanceData);
       }
 
       private void AddElementToFile(IInvocation invocation)
@@ -82,12 +102,12 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
 
       private void AddPropertiesInElementToConfigurationFile(object elementToAddToFile)
       {
-         if (_instanceData.FileWriter is null)
-            throw new NullReferenceException($"{nameof(_instanceData.FileWriter)} was null");
-         
-         var elementFormattedForFile = _instanceData.FileWriter.FormatNewElement(elementToAddToFile);
-         
-         _instanceData.FileWriter.WriteNewElement(elementFormattedForFile);
+         // if (_instanceData.FileWriter is null)
+         //    throw new NullReferenceException($"{nameof(_instanceData.FileWriter)} was null");
+         //
+         // var elementFormattedForFile = _instanceData.FileWriter.FormatNewElement(elementToAddToFile);
+         //
+         // _instanceData.FileWriter.WriteNewElement(elementFormattedForFile);
       }
 
       private void SetInvocationReturnValueAsSpecificType(IInvocation invocation)
@@ -106,7 +126,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
          // Convert if original property was double
          if (originalPropertyType == typeof(double))
          {
-            value.TryParse<double>(out var convertedObject);
+            value.TryParse<double>(out TIListOfCustomInterface convertedObject);
 
             invocation.ReturnValue = convertedObject;
          }
@@ -122,7 +142,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
 
       private void SetUpElementProxy(IInvocation invocation)
       {
-         var containedInterfaceInList = typeof(T).GetProperties()[0].PropertyType;
+         var containedInterfaceInList = typeof(TIListOfCustomInterface).GetProperties()[0].PropertyType;
 
          var itemProxy = _generator.CreateInterfaceProxyWithoutTarget(containedInterfaceInList,this);
 
@@ -133,8 +153,6 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
 
       private string GetValueOfPropertyAtIndexInCachedList(int index, string name)
       {
-         UpdateCachedData();
-         
          foreach (var keyValuePair in _instanceData.CachedConfigurationItems[index].StoredValues)
          {
             if (keyValuePair.Key == name)

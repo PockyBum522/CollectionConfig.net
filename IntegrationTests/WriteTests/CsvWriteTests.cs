@@ -43,8 +43,9 @@ public class CsvWriteTests
     public void CollectionConfigurationBuilder_WhenBuiltWithCsvFile_ShouldNotBeNull()
     {
         var myList = 
-            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
                 .UseCsvFile(ExamplePersonListCsvPath)
+                .UseLogger(_testLogger!)
                 .Build();
 
         myList.Should().NotBeNull();
@@ -54,8 +55,9 @@ public class CsvWriteTests
     public void IListGenerateNewElementExtensionMethod_WhenCalled_ShouldGenerateBlankElementProxy()
     {
         var myList =
-            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
                 .UseCsvFile(ExamplePersonListCsvPath)
+                .UseLogger(_testLogger!)
                 .Build();
 
         var personToAdd = myList.GetNewElement();
@@ -70,8 +72,9 @@ public class CsvWriteTests
     public void IListGenerateNewElementExtensionMethodObject_WhenWrittenTo_ShouldSaveData()
     {
         var myList =
-            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
                 .UseCsvFile(ExamplePersonListCsvPath)
+                .UseLogger(_testLogger!)
                 .Build();
 
         var personToAdd = myList.GetNewElement();
@@ -92,8 +95,9 @@ public class CsvWriteTests
     public void CollectionConfiguration_StringsWhenAdded_ShouldBeAddedToFile()
     {
         var myList = 
-            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
                 .UseCsvFile(ExamplePersonListCsvPath)
+                .UseLogger(_testLogger!)
                 .Build();
 
         var personToAdd = myList.GetNewElement();
@@ -120,8 +124,9 @@ Hades,97,907.32,Cerberus");
     public void CollectionConfiguration_ElementsWhenAddedTwice_ShouldBeAddedToFile()
     {
         var myList = 
-            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
                 .UseCsvFile(ExamplePersonListCsvPath)
+                .UseLogger(_testLogger!)
                 .Build();
 
         var personToAdd = myList.GetNewElement();
@@ -157,8 +162,9 @@ Timothy,22,7.32,Fido");
     public void CollectionConfiguration_ElementsWhenAddedTwiceInDifferentSequence_ShouldBeAddedToFile()
     {
         var myList = 
-            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
                 .UseCsvFile(ExamplePersonListCsvPath)
+                .UseLogger(_testLogger!)
                 .Build();
 
         var personToAdd = myList.GetNewElement();
@@ -195,8 +201,9 @@ Timothy,22,7.32,Fido");
     public void CollectionConfiguration_ElementsWhenAddedTwiceWithSameObject_ShouldBeAddedToFile()
     {
         var myList = 
-            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
                 .UseCsvFile(ExamplePersonListCsvPath)
+                .UseLogger(_testLogger!)
                 .Build();
 
         var personToAdd = myList.GetNewElement();
@@ -229,29 +236,30 @@ Hades,97,907.32,Cerberus
 Timothy,22,7.32,Fido");
     } 
     
-//     [Test]
-//     public void CollectionConfiguration_OnRemove_ShouldRemoveItemFromFile()
-//     {
-//         var myList = 
-//             new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
-//                 .UseCsvFile(ExamplePersonListCsvPath)
-//                 .Build();
-//
-//         foreach (var item in myList)
-//         {
-//             if (item.Name != "Robin") continue;
-//             
-//             // Otherwise, remove matching
-//             myList.Remove(item);
-//             break;
-//         }
-//         
-//         var result = File.ReadAllText(ExamplePersonListCsvPath);
-//         
-//         result.Should().Be(
-// @"Name,Age,MilesRun,PetsName
-// David,32,3.15,Whiskey
-// Alyssa,26,2.12,Maxx
-// Dyamond,31,2.23,Trixie");
-//     } 
+    [Test]
+    public void CollectionConfiguration_OnRemove_ShouldRemoveItemFromFile()
+    {
+        var myList = 
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>()
+                .UseCsvFile(ExamplePersonListCsvPath)
+                .UseLogger(_testLogger!)
+                .Build();
+
+        foreach (var item in myList)
+        {
+            if (item.Name != "Robin") continue;
+            
+            // Otherwise, remove matching
+            myList.Remove(item);
+            break;
+        }
+        
+        var result = File.ReadAllText(ExamplePersonListCsvPath);
+        
+        result.Should().Be(
+@"Name,Age,MilesRun,PetsName
+David,32,3.15,Whiskey
+Alyssa,26,2.12,Maxx
+Dyamond,31,2.23,Trixie");
+    } 
 }

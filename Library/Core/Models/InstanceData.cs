@@ -1,4 +1,5 @@
 ﻿using CollectionConfig.net.Core.Interfaces;
+using Serilog;
 
 namespace CollectionConfig.net.Core.Models;
 
@@ -19,6 +20,11 @@ public class InstanceData : IInstanceData
         CachedConfigurationItems = cachedConfigurationItems;
         CacheLoader = cacheLoader;
     }
+
+    /// <summary>
+    /// Injected logger, optional
+    /// </summary>
+    public ILogger? Logger { get; set; } = null;
 
     /// <summary>
     /// Full file path of the CollectionConfiguration CSV or JSON file on disk

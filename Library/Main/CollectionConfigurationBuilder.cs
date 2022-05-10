@@ -15,7 +15,7 @@ namespace CollectionConfig.net.Main;
 /// All dependency injection takes place either here or in CollectionConfigurationExtensions
 /// </summary>
 [PublicAPI]
-public class CollectionConfigurationBuilder<T> where T : class
+public class CollectionConfigurationBuilder<TIListOfCustomInterface> where TIListOfCustomInterface : class
 {
     /// <summary>
     /// This will be created in the constructor for CollectionConfigurationBuilder, then will be accessed by
@@ -26,17 +26,14 @@ public class CollectionConfigurationBuilder<T> where T : class
     internal InstanceData InstanceData;
     
     private readonly ProxyGenerator _generator = new ();
-    private ILogger? _logger;
-
+    
     /// <summary>
     /// Constructor to allow for building the CollectionConfiguration later
     /// </summary>
     /// <exception cref="ArgumentException">Throws if passed type is not an interface</exception>
-    public CollectionConfigurationBuilder(ILogger? logger = null)
+    public CollectionConfigurationBuilder()
     {
-        _logger = logger;
-        
-        var typeInfo = typeof(T).GetTypeInfo();
+        var typeInfo = typeof(TIListOfCustomInterface).GetTypeInfo();
 
         if (!typeInfo.IsInterface) 
             throw new ArgumentException($"{typeInfo.FullName} must be an interface", typeInfo.FullName);
@@ -53,14 +50,14 @@ public class CollectionConfigurationBuilder<T> where T : class
     /// Creates an instance of the configuration interface as a proxy object for the interface
     /// </summary>
     /// <returns></returns>
-    public T Build()
+    public TIListOfCustomInterface Build()
     {
         CheckThatFileFormatIsInitialized();
         
         // Below here is all setting up and injecting dependencies
-        var interceptor = new InterfaceInterceptor<T>(InstanceData);
+        var interceptor = new InterfaceInterceptor<TIListOfCustomInterface, TNestedCustomInterface>(InstanceData);
         
-        var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(interceptor);
+        var instance = _generator.CreateInterfaceProxyWithoutTarget<TIListOfCustomInterface>(interceptor);
         
         return instance;
     }
