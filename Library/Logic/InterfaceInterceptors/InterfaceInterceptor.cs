@@ -1,5 +1,6 @@
 ﻿using Castle.DynamicProxy;
 using CollectionConfig.net.Core.Models;
+using Serilog;
 
 namespace CollectionConfig.net.Logic.InterfaceInterceptors
 {
@@ -10,6 +11,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
    /// <typeparam name="T">The interface to set up a proxy object from</typeparam>
    public class InterfaceInterceptor<T> : IInterceptor where T : class
    {
+      private readonly ILogger? _logger;
       private readonly InstanceData _instanceData;
       private readonly ProxyGenerator _generator = new ();
       private int _indexBeingAccessedCurrently;
@@ -18,8 +20,10 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
       /// Constructor to set up injected dependencies
       /// </summary>
       /// <param name="instanceData">Injected</param>
-      public InterfaceInterceptor(InstanceData instanceData)
+      /// <param name="logger">Injected, optional</param>
+      public InterfaceInterceptor(InstanceData instanceData, ILogger? logger = null)
       {
+         _logger = logger;
          _instanceData = instanceData;
       }
 
@@ -43,15 +47,34 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
             return;
          }
          
-         if (invocation.Method.Name.StartsWith("set_"))
+         // Handles when a proxy element is being added to the proxy object (List of ICustomInterface)
+         if (invocation.Method.Name.StartsWith("Add"))
          {
-            // For debugging, temp TODO: Remove this temp variable
-            var unused = invocation;
+            AddElementToFile(invocation);
+            UpdateCachedData();
 
             return;
          }
 
          throw new Exception($"Intercepted method not supported: {invocation.Method.Name}");
+      }
+
+      private void AddElementToFile(IInvocation invocation)
+      {
+         var elementToAddToFile = invocation.Arguments[0];
+
+         // For each property, convert to string, add all to last line of file in appropriate "columns"
+         AddPropertiesInElementToConfigurationFile(elementToAddToFile);
+      }
+
+      private void AddPropertiesInElementToConfigurationFile(object elementToAddToFile)
+      {
+         if (_instanceData.FileWriter is null)
+            throw new NullReferenceException($"{nameof(_instanceData.FileWriter)} was null");
+         
+         var elementFormattedForFile = _instanceData.FileWriter.FormatNewElement(elementToAddToFile);
+         
+         _instanceData.FileWriter.WriteNewElement(elementFormattedForFile);
       }
 
       private void SetInvocationReturnValueAsSpecificType(IInvocation invocation)

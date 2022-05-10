@@ -34,4 +34,10 @@ public class InstanceData : IInstanceData
     /// The CacheLoader implementation to use, differs between file formats
     /// </summary>
     public ICacheLoader CacheLoader { get; set; }
+
+    /// <summary>
+    /// IFileWriter that formats new elements for the particular file format of the configuration file and handles
+    /// writing those formatted elements to the file
+    /// </summary>
+    public IFileWriter? FileWriter { get; set; }
 }

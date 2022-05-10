@@ -4,6 +4,8 @@ using CollectionConfig.net.Core.Models;
 using CollectionConfig.net.Logic;
 using CollectionConfig.net.Logic.InterfaceInterceptors;
 using JetBrains.Annotations;
+using Serilog;
+using Serilog.Core;
 
 namespace CollectionConfig.net.Main;
 
@@ -24,13 +26,16 @@ public class CollectionConfigurationBuilder<T> where T : class
     internal InstanceData InstanceData;
     
     private readonly ProxyGenerator _generator = new ();
+    private ILogger? _logger;
 
     /// <summary>
     /// Constructor to allow for building the CollectionConfiguration later
     /// </summary>
     /// <exception cref="ArgumentException">Throws if passed type is not an interface</exception>
-    public CollectionConfigurationBuilder()
+    public CollectionConfigurationBuilder(ILogger? logger = null)
     {
+        _logger = logger;
+        
         var typeInfo = typeof(T).GetTypeInfo();
 
         if (!typeInfo.IsInterface) 
@@ -56,7 +61,7 @@ public class CollectionConfigurationBuilder<T> where T : class
         var interceptor = new InterfaceInterceptor<T>(InstanceData);
         
         // Inject interceptor into ListExtensions
-        ListExtensions.Interceptor = new InterfaceBlankInterceptor<T>();
+        ListExtensions.Interceptor = new GetNewElementInterfaceInterceptor<T>(_logger);
         
         var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(interceptor);
         

@@ -22,7 +22,7 @@ public static class ListExtensions
     /// <param name="inputList">The IList to extend</param>
     /// <typeparam name="T">The type of Elements in the IList, must be an interface</typeparam>
     /// <returns>New blank element of same type as elements in IList</returns>
-    public static T GenerateNewElement<T>(this IList<T> inputList)
+    public static T GetNewElement<T>(this IList<T> inputList)
     {
         const string interceptorNullMessage = 
             $"{nameof(Interceptor)} was null in GenerateNewElement, this means {nameof(Interceptor)} was not " +

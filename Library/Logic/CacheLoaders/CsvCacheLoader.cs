@@ -1,11 +1,13 @@
 ﻿using CollectionConfig.net.Core.Interfaces;
 using CollectionConfig.net.Core.Models;
+using JetBrains.Annotations;
 
 namespace CollectionConfig.net.Logic.CacheLoaders;
 
 /// <summary>
 /// Handles taking a CSV and making a proxy list with all the values
 /// </summary>
+[PublicAPI]
 public class CsvCacheLoader : ICacheLoader
 {
     private readonly string _fullFilePath;
@@ -24,13 +26,6 @@ public class CsvCacheLoader : ICacheLoader
         _fileReader = fileReader;
     }
     
-    private List<string> ReadHeaders(string line)
-    {
-        var splitHeaders = line.Split(",");
-
-        return splitHeaders.ToList();
-    }
-
     private FileElement GetCachedElementLoadedWithCsvData(string line, List<string> headers)
     {
         var proxiedListElement = new FileElement();
@@ -60,7 +55,7 @@ public class CsvCacheLoader : ICacheLoader
         
         var returnList = new List<FileElement>();
 
-        var headers = new List<string>();
+        var headers = GetHeaders();
         
         _positionInCsv = 0;
          
@@ -68,7 +63,7 @@ public class CsvCacheLoader : ICacheLoader
         {
             if (_positionInCsv == 0)
             {
-                headers = ReadHeaders(line);
+                // Skip headers row
                 _positionInCsv++;
                 continue;
             }
@@ -81,5 +76,29 @@ public class CsvCacheLoader : ICacheLoader
         }
 
         return returnList;
+    }
+    
+    /// <summary>
+    /// Gets headers in configuration file in order 
+    /// </summary>
+    /// <returns>List of string representing the header row values, in order</returns>
+    public List<string> GetHeaders()
+    {
+        var rawCsvData = _fileReader.Read(_fullFilePath);
+        
+        var headers = new List<string>();
+        
+        var headerLine = rawCsvData
+            .Split(Environment.NewLine)
+            .FirstOrDefault();
+
+        foreach (var header in headerLine?.Split(",") ?? 
+                               throw new FileLoadException("In attempt to get headers, " +
+                                                           $"{nameof(headerLine)} was null"))
+        {
+            headers.Add(header);
+        }
+        
+        return headers;
     }
 }
