@@ -10,8 +10,8 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
    /// Sets up the interception logic for the proxy object. Anything that's going to run on method calls
    /// using "methods" in the proxy object will get handled here.
    /// </summary>
-   /// <typeparam name="TIListOfCustomInterface">The interface to set up a proxy object from</typeparam>
-   public class InterfaceInterceptor<TIListOfCustomInterface, TNestedCustomInterface> : IInterceptor where TIListOfCustomInterface : class
+   /// <typeparam name="T">The interface to set up a proxy object from</typeparam>
+   public class InterfaceInterceptor<T> : IInterceptor where T : class
    {
       private readonly ILogger? _logger = null;
       private readonly IInstanceData _instanceData;
@@ -37,7 +37,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
       public void Intercept(IInvocation invocation)
       {
          _logger?.Information("New method intercepted in {ThisClass}, method name is {MethodName}",
-            nameof(InterfaceInterceptor<TIListOfCustomInterface>), invocation.Method.Name);
+            nameof(InterfaceInterceptor<T>), invocation.Method.Name);
          
          if (invocation.Method.Name == "get_Item")
          {
@@ -126,7 +126,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
          // Convert if original property was double
          if (originalPropertyType == typeof(double))
          {
-            value.TryParse<double>(out TIListOfCustomInterface convertedObject);
+            value.TryParse<double>(out var convertedObject);
 
             invocation.ReturnValue = convertedObject;
          }
@@ -142,7 +142,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
 
       private void SetUpElementProxy(IInvocation invocation)
       {
-         var containedInterfaceInList = typeof(TIListOfCustomInterface).GetProperties()[0].PropertyType;
+         var containedInterfaceInList = typeof(T).GetProperties()[0].PropertyType;
 
          var itemProxy = _generator.CreateInterfaceProxyWithoutTarget(containedInterfaceInList,this);
 

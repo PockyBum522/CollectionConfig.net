@@ -15,7 +15,7 @@ namespace CollectionConfig.net.Main;
 /// All dependency injection takes place either here or in CollectionConfigurationExtensions
 /// </summary>
 [PublicAPI]
-public class CollectionConfigurationBuilder<TIListOfCustomInterface> where TIListOfCustomInterface : class
+public class CollectionConfigurationBuilder<T> where T : class
 {
     /// <summary>
     /// This will be created in the constructor for CollectionConfigurationBuilder, then will be accessed by
@@ -33,7 +33,7 @@ public class CollectionConfigurationBuilder<TIListOfCustomInterface> where TILis
     /// <exception cref="ArgumentException">Throws if passed type is not an interface</exception>
     public CollectionConfigurationBuilder()
     {
-        var typeInfo = typeof(TIListOfCustomInterface).GetTypeInfo();
+        var typeInfo = typeof(T).GetTypeInfo();
 
         if (!typeInfo.IsInterface) 
             throw new ArgumentException($"{typeInfo.FullName} must be an interface", typeInfo.FullName);
@@ -50,14 +50,14 @@ public class CollectionConfigurationBuilder<TIListOfCustomInterface> where TILis
     /// Creates an instance of the configuration interface as a proxy object for the interface
     /// </summary>
     /// <returns></returns>
-    public TIListOfCustomInterface Build()
+    public T Build()
     {
         CheckThatFileFormatIsInitialized();
         
         // Below here is all setting up and injecting dependencies
-        var interceptor = new InterfaceInterceptor<TIListOfCustomInterface, TNestedCustomInterface>(InstanceData);
+        var interceptor = new InterfaceInterceptor<T>(InstanceData);
         
-        var instance = _generator.CreateInterfaceProxyWithoutTarget<TIListOfCustomInterface>(interceptor);
+        var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(interceptor);
         
         return instance;
     }

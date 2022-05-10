@@ -9,7 +9,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors;
 /// Used for handling the intercepted GetEnumerator method on our cached items that represent the IList of
 /// ICustomInterface
 /// </summary>
-public class ProxyListEnumerator<TIListOfCustomInterface, TNestedCustomInterface> : IEnumerator<TNestedCustomInterface> where TNestedCustomInterface : class
+public class ProxyListEnumerator<TNestedCustomInterface> : IEnumerator<TNestedCustomInterface> where TNestedCustomInterface : class
 {
     private int _index = -1;
     
@@ -33,7 +33,7 @@ public class ProxyListEnumerator<TIListOfCustomInterface, TNestedCustomInterface
     public bool MoveNext()
     {
         _logger?.Information("In {ClassName}, {MethodName} called. Current index {IncrementedIndex}",
-            nameof(ProxyListEnumerator<TIListOfCustomInterface, TNestedCustomInterface>), nameof(MoveNext), _index + 1);
+            nameof(ProxyListEnumerator<TNestedCustomInterface>), nameof(MoveNext), _index + 1);
         
         return ++_index < _instanceData.CachedConfigurationItems.Count;
     }
@@ -46,7 +46,7 @@ public class ProxyListEnumerator<TIListOfCustomInterface, TNestedCustomInterface
         _index = -1;
         
         _logger?.Information("In {ClassName}, {MethodName} called. Current index {UnIncrementedIndex}",
-            nameof(ProxyListEnumerator<TIListOfCustomInterface, TNestedCustomInterface>), nameof(Reset), _index);
+            nameof(ProxyListEnumerator<TNestedCustomInterface>), nameof(Reset), _index);
     }
 
     /// <summary>
@@ -57,9 +57,9 @@ public class ProxyListEnumerator<TIListOfCustomInterface, TNestedCustomInterface
     private TNestedCustomInterface GetCurrentObject(int index)
     {
         _logger?.Information("In {ClassName}, {MethodName} called. Current index {UnIncrementedIndex}",
-            nameof(ProxyListEnumerator<TIListOfCustomInterface, TNestedCustomInterface>), nameof(GetCurrentObject), _index);
+            nameof(ProxyListEnumerator<TNestedCustomInterface>), nameof(GetCurrentObject), _index);
         
-        var cachedElement = _instanceData.CachedConfigurationItems[index];
+        //var cachedElement = _instanceData.CachedConfigurationItems[index];
         
         var interceptor = new GetNewElementInterfaceInterceptor<TNestedCustomInterface>();
         
@@ -87,7 +87,7 @@ public class ProxyListEnumerator<TIListOfCustomInterface, TNestedCustomInterface
 /// Used for handling the intercepted GetEnumerator method on our cached items that represent the IList of
 /// ICustomInterface
 /// </summary>
-public class ProxyListEnumerable<TIListOfCustomInterface> : IEnumerable<TIListOfCustomInterface> where T: class 
+public class ProxyListEnumerable<T> : IEnumerable<T> where T: class 
 {
     private readonly IInstanceData _instanceData;
     
@@ -104,9 +104,9 @@ public class ProxyListEnumerable<TIListOfCustomInterface> : IEnumerable<TIListOf
     /// Gets Enumerator for cached items as IEnumerator of FileElement
     /// </summary>
     /// <returns>Enumerator for cached items as IEnumerator of FileElement</returns>
-    public IEnumerator<TIListOfCustomInterface> GetEnumerator()
+    public IEnumerator<TNestedCustomInterface> GetEnumerator()
     {
-        return new ProxyListEnumerator<TIListOfCustomInterface>(_instanceData);
+        return new ProxyListEnumerator<TNestedCustomInterface>(_instanceData);
     }
 
     /// <summary>

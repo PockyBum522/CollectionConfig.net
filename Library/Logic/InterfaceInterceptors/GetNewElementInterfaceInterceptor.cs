@@ -8,7 +8,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
    /// Sets up the interception logic for "GenerateNewElement" in ListExtensions.
    /// </summary>
    /// <typeparam name="T">The interface to set up a proxy object from</typeparam>
-   public class GetNewElementInterfaceInterceptor<TIListOfCustomInterface> : IInterceptor where T : class
+   public class GetNewElementInterfaceInterceptor<T> : IInterceptor where T : class
    {
       private readonly ILogger? _logger;
       private readonly List<KeyValuePair<string, string>> _storedValues = new();
@@ -34,7 +34,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
          {
             _logger?.Information(
                "In {ClassName}, Intercepting 'get_'. Specifically: {InterceptedFullString}", 
-               nameof(GetNewElementInterfaceInterceptor<TIListOfCustomInterface>), 
+               nameof(GetNewElementInterfaceInterceptor<T>), 
                invocation.Method.Name);
             
             // Initialize if necessary, or get stored value and set it as invocation.ReturnValue
@@ -47,7 +47,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
          {
             _logger?.Information(
                "In {ClassName}, Intercepting 'set_'. Specifically: {InterceptedFullString}", 
-               nameof(GetNewElementInterfaceInterceptor<TIListOfCustomInterface>), 
+               nameof(GetNewElementInterfaceInterceptor<T>), 
                invocation.Method.Name);
 
             SetValueOfProperty(invocation);
@@ -57,7 +57,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
 
          _logger?.Warning(
             "In {ClassName}, Intercepting 'Unsupported'. Specifically: {InterceptedFullString}", 
-            nameof(GetNewElementInterfaceInterceptor<TIListOfCustomInterface>), 
+            nameof(GetNewElementInterfaceInterceptor<T>), 
             invocation.Method.Name);
          
          throw new Exception($"Intercepted method not supported: {invocation.Method.Name}");
@@ -82,7 +82,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
                   propertyName,
                   keyValuePair.Key,
                   originalPropertyType,
-                  nameof(GetNewElementInterfaceInterceptor<TIListOfCustomInterface>));
+                  nameof(GetNewElementInterfaceInterceptor<T>));
 
                if (keyValuePair.Key != propertyName) continue;
 
@@ -90,7 +90,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
                _logger?.Information("Found {NameOfProperty} which is a {PropertyType} in {ThisClass}",
                   propertyName,
                   originalPropertyType,
-                  nameof(GetNewElementInterfaceInterceptor<TIListOfCustomInterface>));
+                  nameof(GetNewElementInterfaceInterceptor<T>));
 
                _storedValues.Remove(keyValuePair);
                _storedValues.Add(new KeyValuePair<string, string>(propertyName, value ??
@@ -154,7 +154,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
 
                // Otherwise:
                _logger?.Information("Found {NameOfProperty} which is a {PropertyType} in {ThisClass}", 
-                  name, originalPropertyType, nameof(GetNewElementInterfaceInterceptor<TIListOfCustomInterface>));
+                  name, originalPropertyType, nameof(GetNewElementInterfaceInterceptor<T>));
                
                return keyValuePair.Value;
             }
@@ -171,7 +171,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
       private void InitializeKeyValuePairForProperty(string name, Type originalPropertyType)
       {
          _logger?.Information("Initializing {NameOfProperty} which is a {PropertyType} in {ThisClass}", 
-            name, originalPropertyType, nameof(GetNewElementInterfaceInterceptor<TIListOfCustomInterface>));
+            name, originalPropertyType, nameof(GetNewElementInterfaceInterceptor<T>));
          
          // Initialize if original property was double
          if (originalPropertyType == typeof(double))
