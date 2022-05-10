@@ -5,7 +5,7 @@ using FluentAssertions;
 using IntegrationTests.TestResources.ExamplePerson;
 using NUnit.Framework;
 
-namespace IntegrationTests.ReadTests;
+namespace IntegrationTests.ReadTests.JSON;
 
 public class JsonReadTests
 {

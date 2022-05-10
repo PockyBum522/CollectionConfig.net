@@ -1,4 +1,5 @@
-﻿using Castle.DynamicProxy;
+﻿using System.Reflection;
+using Castle.DynamicProxy;
 using CollectionConfig.net.Core.Models;
 using Serilog;
 
@@ -41,6 +42,12 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
             return;
          }
          
+         if (invocation.Method.Name == "GetEnumerator")
+         {
+            SetInvocationReturnValueAsEnumeratorProxy(invocation);
+            return;
+         }
+         
          if (invocation.Method.Name.StartsWith("get_"))
          {
             SetInvocationReturnValueAsSpecificType(invocation);
@@ -57,6 +64,12 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
          }
 
          throw new Exception($"Intercepted method not supported: {invocation.Method.Name}");
+      }
+
+      private void SetInvocationReturnValueAsEnumeratorProxy(IInvocation invocation)
+      {
+         // Enumerable from cached items
+         
       }
 
       private void AddElementToFile(IInvocation invocation)

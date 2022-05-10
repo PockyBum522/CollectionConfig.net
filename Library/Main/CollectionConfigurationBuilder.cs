@@ -60,9 +60,6 @@ public class CollectionConfigurationBuilder<T> where T : class
         // Below here is all setting up and injecting dependencies
         var interceptor = new InterfaceInterceptor<T>(InstanceData);
         
-        // Inject interceptor into ListExtensions
-        ListExtensions.Interceptor = new GetNewElementInterfaceInterceptor<T>(_logger);
-        
         var instance = _generator.CreateInterfaceProxyWithoutTarget<T>(interceptor);
         
         return instance;

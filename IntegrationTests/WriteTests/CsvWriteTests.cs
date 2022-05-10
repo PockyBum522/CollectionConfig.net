@@ -108,12 +108,150 @@ public class CsvWriteTests
         var result = File.ReadAllText(ExamplePersonListCsvPath);
         
         result.Should().Be(
-@"Name,Age,MilesRun,PetsName
+            @"Name,Age,MilesRun,PetsName
 David,32,3.15,Whiskey
 Alyssa,26,2.12,Maxx
 Robin,28,1.23,Snuggles
 Dyamond,31,2.23,Trixie
 Hades,97,907.32,Cerberus");
-        
     } 
+    
+    [Test]
+    public void CollectionConfiguration_ElementsWhenAddedTwice_ShouldBeAddedToFile()
+    {
+        var myList = 
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+                .UseCsvFile(ExamplePersonListCsvPath)
+                .Build();
+
+        var personToAdd = myList.GetNewElement();
+
+        personToAdd.Name = "Hades";
+        personToAdd.Age = 97;
+        personToAdd.MilesRun = 907.32;
+        personToAdd.PetsName = "Cerberus";
+        
+        var personToAddTwo = myList.GetNewElement();
+
+        personToAddTwo.Name = "Timothy";
+        personToAddTwo.Age = 22;
+        personToAddTwo.MilesRun = 7.32;
+        personToAddTwo.PetsName = "Fido";
+        
+        myList.Add(personToAdd);
+        myList.Add(personToAddTwo);
+        
+        var result = File.ReadAllText(ExamplePersonListCsvPath);
+        
+        result.Should().Be(
+            @"Name,Age,MilesRun,PetsName
+David,32,3.15,Whiskey
+Alyssa,26,2.12,Maxx
+Robin,28,1.23,Snuggles
+Dyamond,31,2.23,Trixie
+Hades,97,907.32,Cerberus
+Timothy,22,7.32,Fido");
+    } 
+    
+    [Test]
+    public void CollectionConfiguration_ElementsWhenAddedTwiceInDifferentSequence_ShouldBeAddedToFile()
+    {
+        var myList = 
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+                .UseCsvFile(ExamplePersonListCsvPath)
+                .Build();
+
+        var personToAdd = myList.GetNewElement();
+
+        personToAdd.Name = "Hades";
+        personToAdd.Age = 97;
+        personToAdd.MilesRun = 907.32;
+        personToAdd.PetsName = "Cerberus";
+        
+        myList.Add(personToAdd);
+        
+        var personToAddTwo = myList.GetNewElement();
+
+        personToAddTwo.Name = "Timothy";
+        personToAddTwo.Age = 22;
+        personToAddTwo.MilesRun = 7.32;
+        personToAddTwo.PetsName = "Fido";
+        
+        myList.Add(personToAddTwo);
+        
+        var result = File.ReadAllText(ExamplePersonListCsvPath);
+        
+        result.Should().Be(
+            @"Name,Age,MilesRun,PetsName
+David,32,3.15,Whiskey
+Alyssa,26,2.12,Maxx
+Robin,28,1.23,Snuggles
+Dyamond,31,2.23,Trixie
+Hades,97,907.32,Cerberus
+Timothy,22,7.32,Fido");
+    } 
+    
+    [Test]
+    public void CollectionConfiguration_ElementsWhenAddedTwiceWithSameObject_ShouldBeAddedToFile()
+    {
+        var myList = 
+            new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+                .UseCsvFile(ExamplePersonListCsvPath)
+                .Build();
+
+        var personToAdd = myList.GetNewElement();
+
+        personToAdd.Name = "Hades";
+        personToAdd.Age = 97;
+        personToAdd.MilesRun = 907.32;
+        personToAdd.PetsName = "Cerberus";
+        
+        myList.Add(personToAdd);
+
+        personToAdd = myList.GetNewElement();
+
+        personToAdd.Name = "Timothy";
+        personToAdd.Age = 22;
+        personToAdd.MilesRun = 7.32;
+        personToAdd.PetsName = "Fido";
+        
+        myList.Add(personToAdd);
+        
+        var result = File.ReadAllText(ExamplePersonListCsvPath);
+        
+        result.Should().Be(
+            @"Name,Age,MilesRun,PetsName
+David,32,3.15,Whiskey
+Alyssa,26,2.12,Maxx
+Robin,28,1.23,Snuggles
+Dyamond,31,2.23,Trixie
+Hades,97,907.32,Cerberus
+Timothy,22,7.32,Fido");
+    } 
+    
+//     [Test]
+//     public void CollectionConfiguration_OnRemove_ShouldRemoveItemFromFile()
+//     {
+//         var myList = 
+//             new CollectionConfigurationBuilder<IList<IExamplePerson>>(_testLogger)
+//                 .UseCsvFile(ExamplePersonListCsvPath)
+//                 .Build();
+//
+//         foreach (var item in myList)
+//         {
+//             if (item.Name != "Robin") continue;
+//             
+//             // Otherwise, remove matching
+//             myList.Remove(item);
+//             break;
+//         }
+//         
+//         var result = File.ReadAllText(ExamplePersonListCsvPath);
+//         
+//         result.Should().Be(
+// @"Name,Age,MilesRun,PetsName
+// David,32,3.15,Whiskey
+// Alyssa,26,2.12,Maxx
+// Dyamond,31,2.23,Trixie");
+//     } 
 }

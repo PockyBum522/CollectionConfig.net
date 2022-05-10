@@ -11,14 +11,13 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
    public class GetNewElementInterfaceInterceptor<T> : IInterceptor where T : class
    {
       private readonly ILogger? _logger;
-      private readonly ProxyGenerator _generator = new ();
       private readonly List<KeyValuePair<string, string>> _storedValues = new();
 
       /// <summary>
       /// Constructor that sets up injected dependencies
       /// </summary>
       /// <param name="logger">Injected</param>
-      public GetNewElementInterfaceInterceptor(ILogger? logger)
+      public GetNewElementInterfaceInterceptor(ILogger? logger = null)
       {
          _logger = logger;
       }
