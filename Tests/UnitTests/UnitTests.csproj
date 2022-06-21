@@ -14,6 +14,7 @@
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.5.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+        <PackageReference Include="NSubstitute" Version="4.3.0" />
         <PackageReference Include="NUnit" Version="3.13.2" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     </ItemGroup>
@@ -22,6 +23,18 @@
       <ProjectReference Include="..\..\Library\Core\Core.csproj" />
       <ProjectReference Include="..\..\Library\Logic\Logic.csproj" />
       <ProjectReference Include="..\..\Library\Main\Main.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="ReadTests\Csv\CsvReadTests.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="ReadTests\Json\JsonReadTests.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="WriteTests\CsvWriteTests.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 </Project>
