@@ -62,9 +62,9 @@ The purpose of this project is that you should be able to read and write a nativ
 # Usage, JSON:
 
 <ul>
-    Using the same IExamplePerson Interface as the CSV uses:
+Using the same IExamplePerson Interface as the CSV uses:
 
-    JSON file should look like:
+JSON file should look like:
 
     [
         {
@@ -93,10 +93,12 @@ The purpose of this project is that you should be able to read and write a nativ
         }
     ]
 
-    Should support the same types that the CSV does.
+Should support the same types that the CSV does.
 </ul>
 
 # Contributing: 
 
-    More types can be added to this list in InterfaceInterceptor.SetInvocationReturnToValueAsSpecificType(). 
-    If you do so, please add tests for those types to the integration tests for CSV and JSON both. This means updading the example interface, and JSON and CSV example files to match.
+<ul>
+More types can be added to this list in InterfaceInterceptor.SetInvocationReturnToValueAsSpecificType(). 
+If you do so, please add tests for those types to the integration tests for CSV and JSON both. This means updading the example interface, and JSON and CSV example files to match.
+</ul>

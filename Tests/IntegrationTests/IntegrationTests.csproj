@@ -14,6 +14,7 @@
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.6.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+        <PackageReference Include="NSubstitute" Version="4.3.0" />
         <PackageReference Include="NUnit" Version="3.13.2" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
         <PackageReference Include="coverlet.collector" Version="3.1.0" />
@@ -38,15 +39,15 @@
 
     <ItemGroup>
       <Compile Remove="ReadTests\CSV\CsvEnumerationTests.cs" />
-      <Resource Include="ReadTests\CSV\CsvEnumerationTests.cs">
+      <Resource Include="ReadTests\Csv\CsvEnumerationTests.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
       <Compile Remove="ReadTests\CSV\CsvReadTests.cs" />
-      <Resource Include="ReadTests\CSV\CsvReadTests.cs">
+      <Resource Include="ReadTests\Csv\CsvReadTests.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
       <Compile Remove="ReadTests\JSON\JsonReadTests.cs" />
-      <Resource Include="ReadTests\JSON\JsonReadTests.cs">
+      <Resource Include="ReadTests\Json\JsonReadTests.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
       <Compile Remove="WriteTests\CsvWriteTests.cs" />
