@@ -27,6 +27,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Library\Core\Core.csproj" />
+      <ProjectReference Include="..\..\Library\Logic\Logic.csproj" />
+      <ProjectReference Include="..\..\Library\Main\Main.csproj" />
       <ProjectReference Include="..\Library\Main\Main.csproj" />
     </ItemGroup>
 

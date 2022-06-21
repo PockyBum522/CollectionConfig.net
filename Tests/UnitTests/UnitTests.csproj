@@ -18,4 +18,10 @@
         <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Library\Core\Core.csproj" />
+      <ProjectReference Include="..\..\Library\Logic\Logic.csproj" />
+      <ProjectReference Include="..\..\Library\Main\Main.csproj" />
+    </ItemGroup>
+
 </Project>
