@@ -89,7 +89,7 @@ namespace CollectionConfig.net.Logic.InterfaceInterceptors
       {
          // Enumerable from cached items
          invocation.ReturnValue = 
-            new ProxyListEnumerator<TNestedCustomInterface>(_instanceData);
+            new ProxyListEnumerator<T>(_instanceData);
       }
 
       private void AddElementToFile(IInvocation invocation)

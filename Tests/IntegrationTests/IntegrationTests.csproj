@@ -5,6 +5,10 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
+        <Configurations>Release;Debug</Configurations>
+
+        <Platforms>x64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -30,7 +34,25 @@
       <ProjectReference Include="..\..\Library\Core\Core.csproj" />
       <ProjectReference Include="..\..\Library\Logic\Logic.csproj" />
       <ProjectReference Include="..\..\Library\Main\Main.csproj" />
-      <ProjectReference Include="..\Library\Main\Main.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="ReadTests\CSV\CsvEnumerationTests.cs" />
+      <Resource Include="ReadTests\CSV\CsvEnumerationTests.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <Compile Remove="ReadTests\CSV\CsvReadTests.cs" />
+      <Resource Include="ReadTests\CSV\CsvReadTests.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <Compile Remove="ReadTests\JSON\JsonReadTests.cs" />
+      <Resource Include="ReadTests\JSON\JsonReadTests.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <Compile Remove="WriteTests\CsvWriteTests.cs" />
+      <Resource Include="WriteTests\CsvWriteTests.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 </Project>

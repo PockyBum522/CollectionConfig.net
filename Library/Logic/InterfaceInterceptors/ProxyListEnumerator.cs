@@ -104,9 +104,9 @@ public class ProxyListEnumerable<T> : IEnumerable<T> where T: class
     /// Gets Enumerator for cached items as IEnumerator of FileElement
     /// </summary>
     /// <returns>Enumerator for cached items as IEnumerator of FileElement</returns>
-    public IEnumerator<TNestedCustomInterface> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
-        return new ProxyListEnumerator<TNestedCustomInterface>(_instanceData);
+        return new ProxyListEnumerator<T>(_instanceData);
     }
 
     /// <summary>
