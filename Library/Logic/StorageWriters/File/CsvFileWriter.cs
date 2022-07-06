@@ -69,7 +69,7 @@ public class CsvFileWriter : IDataStoreWriter
 
     private List<string> GetExistingHeaders()
     {
-        var csvCacheLoader = new CsvCacheLoader(new FileReader(_configurationFilePath));
+        var csvCacheLoader = new CsvCacheLoader(new FileStoreReader(_configurationFilePath));
 
         return csvCacheLoader.GetHeaders();
     }

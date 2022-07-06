@@ -43,7 +43,7 @@ public static class CollectionConfigurationExtensions
    {
       // Add CSV specific dependencies
       builder.InstanceData.FullFilePath = csvFilePath;
-      builder.InstanceData.CacheLoader = new CsvCacheLoader(new FileReader(csvFilePath));
+      builder.InstanceData.CacheLoader = new CsvCacheLoader(new FileStoreReader(csvFilePath));
       builder.InstanceData.FileWriter = new CsvFileWriter(csvFilePath);
       
       return builder;
@@ -62,7 +62,7 @@ public static class CollectionConfigurationExtensions
    {
       // Add JSON specific dependencies
       builder.InstanceData.FullFilePath = jsonFilePath;
-      builder.InstanceData.CacheLoader = new JsonCacheLoader(new FileReader(jsonFilePath));
+      builder.InstanceData.CacheLoader = new JsonCacheLoader(new FileStoreReader(jsonFilePath));
       builder.InstanceData.FileWriter = new JsonFileWriter(jsonFilePath);
       
       return builder;
