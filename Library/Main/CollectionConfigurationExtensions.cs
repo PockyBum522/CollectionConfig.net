@@ -1,4 +1,5 @@
-﻿using CollectionConfig.net.Logic;
+﻿using CollectionConfig.net.Core.Interfaces;
+using CollectionConfig.net.Logic;
 using CollectionConfig.net.Logic.CacheLoaders;
 using CollectionConfig.net.Logic.StorageReaders;
 using CollectionConfig.net.Logic.StorageReaders.File;
@@ -41,10 +42,17 @@ public static class CollectionConfigurationExtensions
       this CollectionConfigurationBuilder<TInterface> builder,
       string csvFilePath) where TInterface : class
    {
+      if (builder.InstanceData.IsInitialized)
+         throw new InvalidOperationException("Multiple initialization methods have been called " +
+                                             "on the collection configuration builder");
+      
       // Add CSV specific dependencies
       builder.InstanceData.FullFilePath = csvFilePath;
       builder.InstanceData.CacheLoader = new CsvCacheLoader(new FileStoreReader(csvFilePath));
-      builder.InstanceData.FileWriter = new CsvFileWriter(csvFilePath);
+      builder.InstanceData.DataStoreWriter = new CsvFileWriter(csvFilePath);
+      builder.InstanceData.DataStoreReader = new FileStoreReader(csvFilePath);
+      
+      builder.InstanceData.IsInitialized = true;
       
       return builder;
    }
@@ -60,10 +68,44 @@ public static class CollectionConfigurationExtensions
       this CollectionConfigurationBuilder<TInterface> builder,
       string jsonFilePath) where TInterface : class
    {
+      if (builder.InstanceData.IsInitialized)
+         throw new InvalidOperationException("Multiple initialization methods have been called " +
+                                             "on the collection configuration builder");
       // Add JSON specific dependencies
       builder.InstanceData.FullFilePath = jsonFilePath;
       builder.InstanceData.CacheLoader = new JsonCacheLoader(new FileStoreReader(jsonFilePath));
-      builder.InstanceData.FileWriter = new JsonFileWriter(jsonFilePath);
+      builder.InstanceData.DataStoreWriter = new JsonFileWriter(jsonFilePath);
+      builder.InstanceData.DataStoreReader = new FileStoreReader(jsonFilePath);
+      
+      builder.InstanceData.IsInitialized = true;
+      
+      return builder;
+   }
+
+   /// <summary>
+   /// Simple JSON storage.
+   /// </summary>
+   /// <param name="builder">The builder to apply using a JSON file to</param>
+   /// <param name="dataStoreReader">Data storage reader to use</param>
+   /// <param name="dataStoreWriter">Data storage writer to use</param>
+   /// <param name="cacheLoader">CacheLoader that converts the raw storage data to List of DataStoreElement</param>
+   /// <typeparam name="TInterface">Type parameter of the IList of ICustomInterface</typeparam>
+   /// <returns>Builder with JSON specific dependencies set up and injected</returns>
+   public static CollectionConfigurationBuilder<TInterface> UseCustomStorage<TInterface>(
+      this CollectionConfigurationBuilder<TInterface> builder,
+      IDataStoreReader dataStoreReader,
+      IDataStoreWriter dataStoreWriter,
+      ICacheLoader cacheLoader) where TInterface : class
+   {
+      if (builder.InstanceData.IsInitialized)
+         throw new InvalidOperationException("Multiple initialization methods have been called " +
+                                             "on the collection configuration builder");
+      
+      builder.InstanceData.DataStoreReader = dataStoreReader;
+      builder.InstanceData.DataStoreWriter = dataStoreWriter;
+      builder.InstanceData.CacheLoader = cacheLoader;
+      
+      builder.InstanceData.IsInitialized = true;
       
       return builder;
    }

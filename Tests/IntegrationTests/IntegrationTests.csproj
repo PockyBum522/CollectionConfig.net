@@ -39,6 +39,9 @@
 
     <ItemGroup>
       <Compile Remove="ReadTests\CSV\CsvEnumerationTests.cs" />
+      <Resource Include="CollectionConfigurationBuilderTests\CollectionConfigurationBuilderTests.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="ReadTests\Csv\CsvEnumerationTests.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>

@@ -22,6 +22,12 @@ public class InstanceData : IInstanceData
     }
 
     /// <summary>
+    /// Gets set as true once DataStoreReader, DataStoreWriter, and CacheLoader are set up, so that user doesn't
+    /// accidentally call initialization methods that would clash
+    /// </summary>
+    public bool IsInitialized { get; set; } = false;
+    
+    /// <summary>
     /// Injected logger, optional
     /// </summary>
     public ILogger? Logger { get; set; } = null;
@@ -42,8 +48,13 @@ public class InstanceData : IInstanceData
     public ICacheLoader CacheLoader { get; set; }
 
     /// <summary>
-    /// IFileWriter that formats new elements for the particular file format of the configuration file and handles
-    /// writing those formatted elements to the file
+    /// Data store writer that formats new elements for the particular format of the storage and handles
+    /// writing those formatted elements to storage
     /// </summary>
-    public IDataStoreWriter? FileWriter { get; set; }
+    public IDataStoreWriter? DataStoreWriter { get; set; }
+    
+    /// <summary>
+    /// Data store reader that gets new elements from the storage
+    /// </summary>
+    public IDataStoreReader? DataStoreReader { get; set; }
 }
