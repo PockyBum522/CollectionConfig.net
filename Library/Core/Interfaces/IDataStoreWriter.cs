@@ -3,7 +3,7 @@
 /// <summary>
 /// For objects that can write formatted elements to a configuration file that represents the List of ICustomInterface
 /// </summary>
-public interface IFileWriter
+public interface IDataStoreWriter
 {
     /// <summary>
     /// Gets a new element of List of ICustomInterface and formats it how it will be saved in the configuration file

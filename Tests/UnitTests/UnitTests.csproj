@@ -25,16 +25,4 @@
       <ProjectReference Include="..\..\Library\Main\Main.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Resource Include="ReadTests\Csv\CsvReadTests.cs">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Resource>
-      <Resource Include="ReadTests\Json\JsonReadTests.cs">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Resource>
-      <Resource Include="WriteTests\CsvWriteTests.cs">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Resource>
-    </ItemGroup>
-
 </Project>

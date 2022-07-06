@@ -13,7 +13,7 @@ public class InstanceData : IInstanceData
     /// </summary>
     public InstanceData(
         string fullFilePath, 
-        List<FileElement> cachedConfigurationItems, 
+        List<DataStoreElement> cachedConfigurationItems, 
         UninitializedCacheLoader cacheLoader)
     {
         FullFilePath = fullFilePath;
@@ -34,7 +34,7 @@ public class InstanceData : IInstanceData
     /// <summary>
     /// Storage for cached copy of collection configuration file on disk
     /// </summary>
-    public List<FileElement> CachedConfigurationItems { get; set; }
+    public List<DataStoreElement> CachedConfigurationItems { get; set; }
 
     /// <summary>
     /// The CacheLoader implementation to use, differs between file formats
@@ -45,5 +45,5 @@ public class InstanceData : IInstanceData
     /// IFileWriter that formats new elements for the particular file format of the configuration file and handles
     /// writing those formatted elements to the file
     /// </summary>
-    public IFileWriter? FileWriter { get; set; }
+    public IDataStoreWriter? FileWriter { get; set; }
 }

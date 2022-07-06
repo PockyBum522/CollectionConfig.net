@@ -1,12 +1,13 @@
 ﻿using CollectionConfig.net.Core.Interfaces;
 using CollectionConfig.net.Logic.CacheLoaders;
+using CollectionConfig.net.Logic.StorageReaders.File;
 
-namespace CollectionConfig.net.Logic.Writers;
+namespace CollectionConfig.net.Logic.StorageWriters.File;
 
 /// <summary>
 /// Used to format CSV data and write that data to a configuration file or initialize new configuration file if necessary
 /// </summary>
-public class CsvFileWriter : IFileWriter
+public class CsvFileWriter : IDataStoreWriter
 {
     private readonly string _configurationFilePath;
 
@@ -29,7 +30,7 @@ public class CsvFileWriter : IFileWriter
     {
         List<string> headers;
         
-        if (File.Exists(_configurationFilePath))
+        if (System.IO.File.Exists(_configurationFilePath))
         {
             headers = GetExistingHeaders();
         }
@@ -68,7 +69,7 @@ public class CsvFileWriter : IFileWriter
 
     private List<string> GetExistingHeaders()
     {
-        var csvCacheLoader = new CsvCacheLoader(_configurationFilePath, new FileReader());
+        var csvCacheLoader = new CsvCacheLoader(new FileReader(_configurationFilePath));
 
         return csvCacheLoader.GetHeaders();
     }
@@ -83,9 +84,9 @@ public class CsvFileWriter : IFileWriter
         
         // TODO: Otherwise, initialize file
 
-        if (File.Exists(_configurationFilePath))
+        if (System.IO.File.Exists(_configurationFilePath))
         {
-            File.AppendAllText(
+            System.IO.File.AppendAllText(
                 _configurationFilePath, 
                 Environment.NewLine + formattedNewElement);
             

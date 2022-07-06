@@ -11,23 +11,20 @@ namespace CollectionConfig.net.Logic.CacheLoaders;
 /// </summary>
 public class JsonCacheLoader : ICacheLoader
 {
-    private readonly string _fullFilePath;
-    private readonly IFileReader _fileReader;
+    private readonly IDataStoreReader _dataStoreReader;
 
     /// <summary>
     /// Constructor to take injected dependencies
     /// </summary>
-    /// <param name="fullFilePath">Full path of the JSON file containing configuration data</param>
-    /// <param name="fileReader">Injected</param>
-    public JsonCacheLoader(string fullFilePath, IFileReader fileReader)
+    /// <param name="dataStoreReader">Injected</param>
+    public JsonCacheLoader(IDataStoreReader dataStoreReader)
     {
-        _fullFilePath = fullFilePath;
-        _fileReader = fileReader;
+        _dataStoreReader = dataStoreReader;
     }
     
-    private FileElement MakeFileElementFrom(JToken jsonToken, int positionInList)
+    private DataStoreElement MakeFileElementFrom(JToken jsonToken, int positionInList)
     {
-        var returnFileElement = new FileElement()
+        var returnFileElement = new DataStoreElement()
         {
             PositionInList = positionInList
         };
@@ -35,7 +32,7 @@ public class JsonCacheLoader : ICacheLoader
         foreach (var jToken in jsonToken.Children())
         {
             var jElementToken = (JProperty)jToken;
-            var elementValue = (JValue)(jElementToken.First ?? throw new ArgumentNullException());
+            var elementValue = (JValue)(jElementToken.First ?? throw new NullReferenceException());
 
             returnFileElement.StoredValues.Add(
                 new KeyValuePair<string, string>(
@@ -50,11 +47,11 @@ public class JsonCacheLoader : ICacheLoader
     /// Returns data from the JSON on disk in the form of List of ProxiedListElement, presumably to be cached 
     /// </summary>
     /// <returns>Data from the JSON on disk in the form of List of ProxiedListElement</returns>
-    public List<FileElement> UpdateCachedDataFromFile()
+    public List<DataStoreElement> UpdateCachedDataFromFile()
     {
-        var rawJsonData = _fileReader.Read(_fullFilePath);
+        var rawJsonData = _dataStoreReader.Read();
         
-        var returnList = new List<FileElement>();
+        var returnList = new List<DataStoreElement>();
         
         var dynamicJsonObject = JsonConvert.DeserializeObject(rawJsonData);
 

@@ -42,7 +42,7 @@ public class CollectionConfigurationBuilder<T> where T : class
         // of the config file. InstanceData is then injected into most of the classes in this library. 
         InstanceData = new InstanceData(
             "", 
-            new List<FileElement>(),
+            new List<DataStoreElement>(),
             new UninitializedCacheLoader());
     }
 

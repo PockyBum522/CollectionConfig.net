@@ -26,8 +26,8 @@ public static class GenericValueConverter
 
         try
         {
-            result = (T?)converter.ConvertFromString(input ?? throw new ArgumentNullException(nameof(input)))
-                     ?? throw new ArgumentNullException();
+            result = (T?)converter.ConvertFromString(input ?? throw new NullReferenceException(nameof(input)))
+                     ?? throw new NullReferenceException(nameof(converter.ConvertFromString));
 
             isConversionSuccessful = true;
         }

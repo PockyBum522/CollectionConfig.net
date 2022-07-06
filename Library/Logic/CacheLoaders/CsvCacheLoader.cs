@@ -10,25 +10,22 @@ namespace CollectionConfig.net.Logic.CacheLoaders;
 [PublicAPI]
 public class CsvCacheLoader : ICacheLoader
 {
-    private readonly string _fullFilePath;
-    private readonly IFileReader _fileReader;
+    private readonly IDataStoreReader _dataStoreReader;
     
     private int _positionInCsv;
 
     /// <summary>
     /// Constructor to take injected dependencies
     /// </summary>
-    /// <param name="fullFilePath">Full path to CSV file containing configuration data</param>
-    /// <param name="fileReader">Injected</param>
-    public CsvCacheLoader(string fullFilePath, IFileReader fileReader)
+    /// <param name="dataStoreReader">Injected</param>
+    public CsvCacheLoader(IDataStoreReader dataStoreReader)
     {
-        _fullFilePath = fullFilePath;
-        _fileReader = fileReader;
+        _dataStoreReader = dataStoreReader;
     }
     
-    private FileElement GetCachedElementLoadedWithCsvData(string line, List<string> headers)
+    private DataStoreElement GetCachedElementLoadedWithCsvData(string line, List<string> headers)
     {
-        var proxiedListElement = new FileElement();
+        var proxiedListElement = new DataStoreElement();
         
         var splitLine = line.Split(",");
         
@@ -49,11 +46,11 @@ public class CsvCacheLoader : ICacheLoader
     /// Returns data from the CSV on disk in the form of List of FileElement, presumably to be cached 
     /// </summary>
     /// <returns>Data from the CSV on disk in the form of List of FileElement</returns>
-    public List<FileElement> UpdateCachedDataFromFile()
+    public List<DataStoreElement> UpdateCachedDataFromFile()
     {
-        var rawCsvData = _fileReader.Read(_fullFilePath);
+        var rawCsvData = _dataStoreReader.Read();
         
-        var returnList = new List<FileElement>();
+        var returnList = new List<DataStoreElement>();
 
         var headers = GetHeaders();
         
@@ -84,7 +81,7 @@ public class CsvCacheLoader : ICacheLoader
     /// <returns>List of string representing the header row values, in order</returns>
     public List<string> GetHeaders()
     {
-        var rawCsvData = _fileReader.Read(_fullFilePath);
+        var rawCsvData = _dataStoreReader.Read();
         
         var headers = new List<string>();
         

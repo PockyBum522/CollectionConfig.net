@@ -22,9 +22,9 @@
 
     <ItemGroup>
       <None Remove="TestResources\ExamplePerson\ExamplePersonList.csv" />
-      <Content Include="TestResources\ExamplePerson\ExamplePersonList.csv">
+      <Resource Include="TestResources\ExamplePerson\ExamplePersonList.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+      </Resource>
       <None Remove="TestResources\ExamplePerson\ExamplePersonList.json" />
       <Content Include="TestResources\ExamplePerson\ExamplePersonList.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>

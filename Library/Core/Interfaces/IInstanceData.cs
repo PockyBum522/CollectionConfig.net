@@ -21,7 +21,7 @@ public interface IInstanceData
     /// <summary>
     /// Storage for cached copy of collection configuration file on disk
     /// </summary>
-    public List<FileElement> CachedConfigurationItems { get; set; }
+    public List<DataStoreElement> CachedConfigurationItems { get; set; }
 
     /// <summary>
     /// The CacheLoader implementation to use, differs between file formats

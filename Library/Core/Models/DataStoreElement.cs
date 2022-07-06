@@ -7,7 +7,7 @@ namespace CollectionConfig.net.Core.Models;
 /// position in the proxied list
 /// </summary>
 [PublicAPI]
-public class FileElement
+public class DataStoreElement
 {
     /// <summary>
     /// Key value pairs to store the value for each proxied property name (Keys are property names)
@@ -43,7 +43,7 @@ public class FileElement
     /// <summary>
     /// Constructor for ProxiedListElement, initializes LastUpdatedFromDisk
     /// </summary>
-    public FileElement()
+    public DataStoreElement()
     {
         LastUpdatedFromDisk = DateTime.Now;
     }

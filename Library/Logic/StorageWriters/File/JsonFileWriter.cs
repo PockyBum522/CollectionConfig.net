@@ -1,11 +1,11 @@
 ﻿using CollectionConfig.net.Core.Interfaces;
 
-namespace CollectionConfig.net.Logic.Writers;
+namespace CollectionConfig.net.Logic.StorageWriters.File;
 
 /// <summary>
 /// Used to format JSON data and write that data to a configuration file or initialize new configuration file if necessary
 /// </summary>
-public class JsonFileWriter : IFileWriter
+public class JsonFileWriter : IDataStoreWriter
 {
     /// <summary>
     /// Constructor for injecting dependencies

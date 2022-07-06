@@ -12,5 +12,5 @@ public interface ICacheLoader
     /// Returns data from the file on disk in the form of List of ProxiedListElement, presumably to be cached 
     /// </summary>
     /// <returns>Data from the file on disk in the form of List of ProxiedListElement</returns>
-    List<FileElement> UpdateCachedDataFromFile();
+    List<DataStoreElement> UpdateCachedDataFromFile();
 }

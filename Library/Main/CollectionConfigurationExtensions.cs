@@ -1,6 +1,9 @@
 ﻿using CollectionConfig.net.Logic;
 using CollectionConfig.net.Logic.CacheLoaders;
-using CollectionConfig.net.Logic.Writers;
+using CollectionConfig.net.Logic.StorageReaders;
+using CollectionConfig.net.Logic.StorageReaders.File;
+using CollectionConfig.net.Logic.StorageWriters;
+using CollectionConfig.net.Logic.StorageWriters.File;
 using Serilog;
 
 namespace CollectionConfig.net.Main;
@@ -40,7 +43,7 @@ public static class CollectionConfigurationExtensions
    {
       // Add CSV specific dependencies
       builder.InstanceData.FullFilePath = csvFilePath;
-      builder.InstanceData.CacheLoader = new CsvCacheLoader(csvFilePath, new FileReader());
+      builder.InstanceData.CacheLoader = new CsvCacheLoader(new FileReader(csvFilePath));
       builder.InstanceData.FileWriter = new CsvFileWriter(csvFilePath);
       
       return builder;
@@ -59,7 +62,7 @@ public static class CollectionConfigurationExtensions
    {
       // Add JSON specific dependencies
       builder.InstanceData.FullFilePath = jsonFilePath;
-      builder.InstanceData.CacheLoader = new JsonCacheLoader(jsonFilePath, new FileReader());
+      builder.InstanceData.CacheLoader = new JsonCacheLoader(new FileReader(jsonFilePath));
       builder.InstanceData.FileWriter = new JsonFileWriter(jsonFilePath);
       
       return builder;
